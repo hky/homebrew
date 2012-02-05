@@ -19,14 +19,14 @@ end
 module Homebrew extend self
   def options
     ff.each do |f|
-      next if f.options.empty?
+      next if f.build.empty?
       if ARGV.include? '--compact'
-        puts f.options.collect {|o| o[0]} * " "
+        puts f.build.collect {|k,v| k} * " "
       else
         puts f.name
-        f.options.each do |o|
-          puts o[0]
-          puts "\t"+o[1]
+        f.build.each do |k,v|
+          puts k
+          puts "\t"+v
         end
         puts
       end
