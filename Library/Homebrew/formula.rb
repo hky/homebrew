@@ -3,11 +3,82 @@ require 'fileutils'
 require 'formula_support'
 
 
+# This class holds the build-time options defined for a Formula,
+# and provides named access to those options during install.
+class BuildOptions
+
+  def initialize
+    @options = []
+  end
+
+  def add name, description=nil
+    if description.nil?
+      case name
+      when "universal"
+        description = "Build a universal binary."
+      when "32-bit"
+        description = "Build 32-bit only."
+      else
+        raise "Description missing for option \"#{name}\"."
+      end
+    end
+
+    @options << [name, description]
+  end
+
+  def has_option? name
+    @options.each {|o| return true if o[0] == name}
+    return false
+  end
+
+  def empty?
+    @options.empty?
+  end
+
+  def collect
+    @options.collect {|o| yield o[0], o[1]}
+  end
+
+  def each
+    @options.each {|o| yield o[0], o[1]}
+  end
+
+  def include? name
+    ARGV.include? '--' + name
+  end
+
+  def using? name
+    ARGV.include? '--' + name
+  end
+
+  def head?
+    ARGV.flag? '--HEAD'
+  end
+
+  def devel?
+    ARGV.include? '--devel'
+  end
+
+  # True if the user requested a universal build.
+  def universal?
+    ARGV.include? '--universal'
+  end
+
+  # Request a 32-bit only build.
+  # This is needed for some use-cases though we prefer to build Universal
+  # when a 32-bit version is needed.
+  def build_32_bit?
+    ARGV.include? '--32-bit'
+  end
+end
+
+
 # Derive and define at least @url, see Library/Formula for examples
 class Formula
   include FileUtils
 
   attr_reader :name, :path, :url, :version, :homepage, :specs, :downloader
+  attr_reader :build
   attr_reader :standard, :unstable
   attr_reader :bottle_url, :bottle_sha1, :head
 
@@ -52,6 +123,8 @@ class Formula
     CHECKSUM_TYPES.each { |type| set_instance_variable type }
 
     @downloader=download_strategy.new @spec_to_use.url, name, version, @spec_to_use.specs
+
+    normalize_build_options
   end
 
   # if the dir is there, but it's empty we consider it not installed
@@ -665,6 +738,20 @@ EOF
     raise 'You cannot override Formula.brew' if method == 'brew'
   end
 
+  # Combine DSL `option` and `def options`
+  def normalize_build_options
+    @build = BuildOptions.new
+
+    dsl_options = self.class.send('dsl_options')
+    dsl_options.each do |o|
+      build.add(o[0], o[1])
+    end unless dsl_options.nil?
+
+    options.each do |o|
+      build.add(o[0], o[1])
+    end
+  end
+
   class << self
     # The methods below define the formula DSL.
     attr_reader :standard, :unstable
@@ -681,6 +768,7 @@ EOF
 
     attr_rw :version, :homepage, :mirrors, :specs, :deps, :external_deps
     attr_rw :keg_only_reason, :fails_with_llvm_reason, :skip_clean_all
+    attr_rw :dsl_options
     attr_rw :bottle_url, :bottle_sha1
     attr_rw(*CHECKSUM_TYPES)
 
@@ -761,6 +849,12 @@ EOF
       else
         raise "Unsupported type #{name.class}"
       end
+    end
+
+    def option name, description=nil
+      @dsl_options ||= []
+      raise "Options should not start with dashes." if name[0, 1] == "-"
+      @dsl_options << [name, description]
     end
 
     def skip_clean paths
