@@ -11,9 +11,7 @@ class Fontforge < Formula
   depends_on 'pango'
   depends_on 'potrace'
 
-  def options
-    [['--without-python', 'Build without Python.']]
-  end
+  option 'without-python', 'Disable Python support.'
 
   fails_with_llvm "Compiling cvexportdlg.c fails with error: initializer element is not constant", :build => 2336
 

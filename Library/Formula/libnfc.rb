@@ -7,9 +7,7 @@ class Libnfc < Formula
 
   depends_on 'libusb-compat'
 
-  def options
-    [['--with-pn532_uart', 'Enable PN532 UART support']]
-  end
+  option 'with-pn532_uart', 'Enable PN532 UART support.'
 
   def install
     args = ["--disable-debug", "--disable-dependency-tracking",

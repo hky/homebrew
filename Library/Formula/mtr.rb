@@ -7,11 +7,7 @@ class Mtr < Formula
 
   depends_on 'gtk+' unless ARGV.include? "--no-gtk"
 
-  def options
-    [
-      ['--no-gtk', "Don't build with Gtk+ support"]
-    ]
-  end
+  option 'no-gtk', "Build without Gtk+ support."
 
   def install
     # We need to add this because nameserver8_compat.h has been removed in Snow Leopard

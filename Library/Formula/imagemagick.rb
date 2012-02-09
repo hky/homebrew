@@ -77,20 +77,16 @@ class Imagemagick < Formula
     path.extname == '.la'
   end
 
-  def options
-    [
-      ['--with-ghostscript', 'Compile against ghostscript (not recommended.)'],
-      ['--use-wmf', 'Compile with libwmf support.'],
-      ['--use-lqr', 'Compile with liblqr support.'],
-      ['--use-exr', 'Compile with openexr support.'],
-      ['--disable-openmp', 'Disable OpenMP.'],
-      ['--enable-hdri', 'Compile with HDRI support enabled'],
-      ['--with-magick-plus-plus', 'Compile with C++ interface.'],
-      ['--with-quantum-depth-8', 'Compile with a quantum depth of 8 bit'],
-      ['--with-quantum-depth-16', 'Compile with a quantum depth of 16 bit'],
-      ['--with-quantum-depth-32', 'Compile with a quantum depth of 32 bit'],
-    ]
-  end
+  option 'with-ghostscript', 'Compile against ghostscript (not recommended.)'
+  option 'use-wmf', 'Compile with libwmf support.'
+  option 'use-lqr', 'Compile with liblqr support.'
+  option 'use-exr', 'Compile with openexr support.'
+  option 'disable-openmp', 'Disable OpenMP.'
+  option 'enable-hdri', 'Compile with HDRI support enabled.'
+  option 'with-magick-plus-plus', 'Compile with C++ interface.'
+  option 'with-quantum-depth-8', 'Compile with a quantum depth of 8 bit.'
+  option 'with-quantum-depth-16', 'Compile with a quantum depth of 16 bit.'
+  option 'with-quantum-depth-32', 'Compile with a quantum depth of 32 bit.'
 
   def install
     ENV.x11 # Add to PATH for freetype-config on Snow Leopard

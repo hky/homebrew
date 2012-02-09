@@ -8,9 +8,7 @@ class Dcmtk < Formula
   depends_on 'libtiff'
   depends_on 'doxygen' if ARGV.include? '--with-docs'
 
-  def options
-    [['--with-docs', 'Install development libraries/headers and HTML docs']]
-  end
+  option 'with-docs', 'Install development libraries/headers and HTML docs.'
 
   def install
     ENV.m64 if MacOS.prefer_64_bit?

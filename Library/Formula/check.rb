@@ -5,12 +5,10 @@ class Check < Formula
   homepage 'http://check.sourceforge.net/'
   md5 '5d75e9a6027cde79d2c339ef261e7470'
 
-  def options
-    [["--universal", "Build a universal binary."]]
-  end
+  option "universal"
 
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"

@@ -7,14 +7,10 @@ class Libvpx < Formula
 
   depends_on 'yasm' => :build
 
-  def options
-    [
-      ['--gcov', 'Enable code coverage'],
-      ['--mem-tracker', 'Enable tracking memory usage'],
-      ['--postproc','Enable post processing'],
-      ['--visualizer', 'Enable post processing visualizer']
-    ]
-  end
+  option 'gcov', 'Enable code coverage.'
+  option 'mem-tracker', 'Enable tracking memory usage.'
+  option 'postproc','Enable post processing.'
+  option 'visualizer', 'Enable post processing visualizer.'
 
   def install
     args = ["--prefix=#{prefix}",

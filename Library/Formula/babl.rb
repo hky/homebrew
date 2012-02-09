@@ -9,11 +9,7 @@ class Babl < Formula
 
   depends_on 'pkg-config' => :build
 
-  def options
-  [
-    ["--universal", "Builds a universal binary"],
-  ]
-  end
+  option "universal"
 
   def patches
     # Fixes an error when compiling with clang
@@ -22,14 +18,13 @@ class Babl < Formula
   end
 
   def install
-    if ARGV.build_universal?
+    if build.universal?
       ENV.universal_binary
       opoo 'Compilation may fail at babl-cpuaccel.c using gcc for a universal build' if ENV.compiler == :gcc
     end
 
-    argv = ["--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"]
-
-    system "./configure", *argv
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "/usr/bin/make install"
   end
 end

@@ -7,16 +7,12 @@ class Vrpn < Formula
 
   head 'git://git.cs.unc.edu/vrpn.git'
 
-  depends_on 'libusb' # for HID support
   depends_on 'cmake' => :build
+  depends_on 'libusb'
   depends_on 'doxygen' if ARGV.include? '--docs'
 
-  def options
-    [
-      ['--clients', 'Build client apps and tests.'],
-      ['--docs', 'Build doxygen-based API documentation']
-    ]
-  end
+  option 'clients', 'Build client apps and tests.'
+  option 'docs', 'Build doxygen-based API documentation.'
 
   def install
     args = std_cmake_parameters.split

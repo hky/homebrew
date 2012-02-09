@@ -9,12 +9,10 @@ class Libmpd < Formula
   depends_on 'gettext'
   depends_on 'glib'
 
-  def options
-    [[ '--universal', 'Build a universal library.' ]]
-  end
+  option "universal"
 
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"

@@ -7,9 +7,7 @@ class Mpfr < Formula
 
   depends_on 'gmp'
 
-  def options
-    [["--32-bit", "Build 32-bit only."]]
-  end
+  option "32-bit"
 
   def patches
     { :p1 => "http://www.mpfr.org/mpfr-3.1.0/allpatches" }

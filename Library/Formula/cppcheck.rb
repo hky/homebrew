@@ -10,12 +10,8 @@ class Cppcheck < Formula
   depends_on 'pcre' unless ARGV.include? '--no-rules'
   depends_on 'qt' if ARGV.include? '--with-gui'
 
-  def options
-    [
-      ['--no-rules', "Build without rules (no pcre dependency)"],
-      ['--with-gui', "Build the cppcheck gui."]
-    ]
-  end
+  option 'no-rules', "Build without rules (no pcre dependency)."
+  option 'with-gui', "Build the cppcheck gui."
 
   # Do not strip binaries, or else it fails to run.
   skip_clean :all

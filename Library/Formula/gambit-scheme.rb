@@ -5,12 +5,9 @@ class GambitScheme < Formula
   homepage 'http://dynamo.iro.umontreal.ca/~gambit/wiki/index.php/Main_Page'
   md5 'f6230a1f1f56b8113e0b9e391074bcb0'
 
-  def options
-    [
-      ['--with-check', 'Execute "make check" before installing. Runs some basic scheme programs to ensure that gsi and gsc are working'],
-      ['--enable-shared', 'Build Gambit Scheme runtime as shared library']
-    ]
-  end
+  option 'enable-shared', 'Build Gambit Scheme runtime as shared library.'
+  option 'test',
+    'Execute "make check" before installing. Runs some basic scheme programs to ensure that gsi and gsc are working.'
 
   skip_clean :all
 
@@ -19,19 +16,18 @@ class GambitScheme < Formula
   def install
     ENV.O2 # Gambit Scheme doesn't like full optimizations
 
-    configure_args = [
+    args = [
       "--prefix=#{prefix}",
       "--infodir=#{info}",
       "--disable-debug",
       # Recommended to improve the execution speed and compactness
       # of the generated executables. Increases compilation times.
-      "--enable-single-host"
-    ]
+      "--enable-single-host"]
 
-    configure_args << "--enable-shared" if ARGV.include? '--enable-shared'
+    args << "--enable-shared" if ARGV.include? '--enable-shared'
 
-    system "./configure", *configure_args
-    system "make check" if ARGV.include? '--with-check'
+    system "./configure", *args
+    system "make check" if ARGV.include? '--test'
 
     ENV.j1
     system "make"

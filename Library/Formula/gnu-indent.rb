@@ -8,9 +8,7 @@ class GnuIndent < Formula
 
   depends_on "gettext"
 
-  def options
-    [['--default-names', "Do not prepend 'g' to the binary (will override system indent)"]]
-  end
+  option 'default-names', "Do not prepend 'g' to the binary. Overrides system indent."
 
   def install
     args = ["--disable-debug", "--disable-dependency-tracking",

@@ -24,15 +24,11 @@ class Grass < Formula
 
   depends_on "cairo" if MacOS.leopard?
 
+  option 'with-postgres', 'Build with PostgreSQL support.'
+  option 'with-mysql', 'Build with MySQL support.'
+
   def patches
     DATA
-  end
-
-  def options
-    [
-      ['--with-postgres', 'Specify PostgreSQL as a dependency'],
-      ['--with-mysql', 'Specify MySQL as a dependency']
-    ]
   end
 
   def install

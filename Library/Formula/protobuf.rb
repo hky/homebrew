@@ -7,16 +7,14 @@ class Protobuf < Formula
 
   fails_with_llvm :build => 2334
 
-  def options
-    [['--universal', 'Do a universal build']]
-  end
+  option "universal"
 
   def install
     # Don't build in debug mode. See:
     # https://github.com/mxcl/homebrew/issues/9279
     # http://code.google.com/p/protobuf/source/browse/trunk/configure.ac#61
     ENV.prepend 'CXXFLAGS', '-DNDEBUG'
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-zlib"

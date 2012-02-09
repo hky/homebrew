@@ -22,13 +22,10 @@ class SwiProlog < Formula
   fails_with_llvm "Exported procedure chr_translate:chr_translate_line_info/3 is not defined",
     :build => 2335
 
-  def options
-    [['--lite', "Don't install any packages; overrides --with-jpl"],
-     ['--without-jpl', "Include JPL, the Java-Prolog Bridge"]]
-  end
+  option 'lite', "Don't install any packages; overrides --with-jpl."
+  option 'without-jpl', "Include JPL, the Java-Prolog Bridge."
 
   def install
-    args = ["--prefix=#{prefix}", "--mandir=#{man}"]
     ENV.append 'DISABLE_PKGS', "jpl" if ARGV.include? "--without-jpl"
 
     if x11_installed?
@@ -45,6 +42,7 @@ class SwiProlog < Formula
     ENV['CIFLAGS'] = ENV['CPPFLAGS']
     ENV['COFLAGS'] = ENV['CFLAGS']
 
+    args = ["--prefix=#{prefix}", "--mandir=#{man}"]
     # Build the packages unless --lite option specified
     args << "--with-world" unless ARGV.include? "--lite"
 

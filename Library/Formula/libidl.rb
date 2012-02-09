@@ -9,12 +9,10 @@ class Libidl < Formula
   depends_on 'gettext'
   depends_on 'glib'
 
-  def options
-    [['--universal', 'Build universal binaries.']]
-  end
+  option "universal"
 
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end

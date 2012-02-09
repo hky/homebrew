@@ -25,12 +25,12 @@ class Gpac < Formula
   depends_on 'sdl' => :optional
   depends_on 'theora' => :optional
 
-  depends_on 'ffmpeg' => :optional if ARGV.build_head?
-  depends_on 'openjpeg' => :optional if ARGV.build_head?
-
-  def options
-    [['--with-lowercase', 'Install binaries with lowercase names']]
+  if ARGV.build_head?
+    depends_on 'ffmpeg' => :optional
+    depends_on 'openjpeg' => :optional
   end
+
+  option 'lowercase', 'Install binaries with lowercase names.'
 
   def install
     ENV.deparallelize
@@ -39,8 +39,10 @@ class Gpac < Formula
             "--mandir=#{man}",
             # Force detection of X libs on 64-bit kernel
             "--extra-ldflags=-L/usr/X11/lib"]
-    args << "--use-ffmpeg=no" unless ARGV.build_head?
-    args << "--use-openjpeg=no" unless ARGV.build_head?
+
+    unless ARGV.build_head?
+      args << "--use-ffmpeg=no" << "--use-openjpeg=no"
+    end
 
     system "chmod +x configure"
     system "./configure", *args

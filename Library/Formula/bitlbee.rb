@@ -9,9 +9,7 @@ class Bitlbee < Formula
   depends_on 'gnutls'
   depends_on 'libpurple' if ARGV.include? '--purple'
 
-  def options
-    [['--purple', "Use libpurple for all communication with instant messaging networks"]]
-  end
+  option 'purple', "Use libpurple."
 
   def install
     # By default Homebrew will set ENV['LD'] to the same as ENV['CC'] which

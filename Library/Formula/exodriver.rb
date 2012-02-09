@@ -9,9 +9,7 @@ class Exodriver < Formula
 
   depends_on 'libusb'
 
-  def options
-    [["--universal", "Build a universal binary."]]
-  end
+  option "universal"
 
   def install
     ENV.universal_binary if ARGV.build_universal?

@@ -10,18 +10,14 @@ class Gegl < Formula
   depends_on 'gettext'
   depends_on 'pkg-config' => :build
 
-  def options
-  [
-    ["--universal", "Builds a universal binary"],
-  ]
-  end
+  option "universal"
 
   def install
     # ./configure breaks when optimization is enabled with llvm
     ENV.no_optimization if ENV.compiler == :llvm
 
     argv = ["--disable-docs", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"]
-    if ARGV.build_universal?
+    if build.universal?
       ENV.universal_binary
       # ffmpeg's formula is currently not universal-enabled
       argv << "--without-libavformat"

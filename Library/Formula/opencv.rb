@@ -13,7 +13,6 @@ class Opencv < Formula
   md5 '82e4b6bfa349777233eea09b075e931e'
   homepage 'http://opencv.willowgarage.com/wiki/'
 
-
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
 
@@ -27,19 +26,15 @@ class Opencv < Formula
   # you don't need unless you're doing video analysis, and some of it isn't
   # in Homebrew anyway.
 
+  depends_on 'qt' if ARGV.include? '--with-qt'
+
+  option "32-bit"
+  option "with-qt", "Build qt backend."
+
   def patches
     # Fix conflict when OpenEXR is installed. See:
     #   http://tech.groups.yahoo.com/group/OpenCV/message/83201
     DATA
-  end
-
-  depends_on 'qt' if ARGV.include? '--with-qt'
-
-  def options
-    [
-      ["--32-bit", "Build 32-bit only."],
-      ["--with-qt", "Build qt backend."]
-    ]
   end
 
   def install

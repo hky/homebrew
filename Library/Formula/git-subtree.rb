@@ -7,15 +7,13 @@ class GitSubtree < Formula
 
   head 'https://github.com/apenwarr/git-subtree.git'
 
-  def options
-    [['--build-docs', "Build man pages using asciidoc and xmlto"]]
-  end
-
+  # Additional dependencies for building manpages.
   if ARGV.include? '--build-docs'
-    # these are needed to build man pages
     depends_on 'asciidoc'
     depends_on 'xmlto'
   end
+
+  option 'build-docs', "Build man pages using asciidoc and xmlto."
 
   def install
     if ARGV.include? '--build-docs'

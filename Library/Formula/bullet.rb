@@ -9,15 +9,11 @@ class Bullet < Formula
 
   depends_on 'cmake' => :build
 
-  def options
-    [
-      ['--framework'  , "Build Frameworks"],
-      ['--universal'  , "Build in universal mode"],
-      ['--shared'     , "Build shared libraries"],
-      ['--build-demo' , "Build demo applications"],
-      ['--build-extra', "Build extra library"]
-    ]
-  end
+  option "universal"
+  option 'framework',   "Build Frameworks."
+  option 'shared',      "Build shared libraries."
+  option 'build-demo',  "Build demo applications."
+  option 'build-extra', "Build extra library."
 
   def install
     args = []
@@ -31,7 +27,7 @@ class Bullet < Formula
       args << "-DCMAKE_INSTALL_PREFIX=#{prefix}"
     end
 
-    args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if ARGV.build_universal?
+    args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if build.universal?
     args << "-DBUILD_DEMOS=OFF" if not ARGV.include? "--build-demo"
     args << "-DBUILD_EXTRAS=OFF" if not ARGV.include? "--build-extra"
 

@@ -16,9 +16,7 @@ class Mongodb < Formula
 
   skip_clean :all
 
-  def options
-    [['--32-bit', 'Build 32-bit only.']]
-  end
+  option '32-bit'
 
   def install
     # Copy the prebuilt binaries to prefix

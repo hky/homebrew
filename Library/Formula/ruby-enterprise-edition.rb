@@ -11,9 +11,7 @@ class RubyEnterpriseEdition < Formula
 
   skip_clean 'bin/ruby'
 
-  def options
-    [['--enable-shared', "Compile shared, but see caveats."]]
-  end
+  option 'enable-shared', "Compile shared, but see caveats."
 
   def install
     readline = Formula.factory('readline').prefix

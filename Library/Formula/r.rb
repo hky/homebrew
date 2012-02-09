@@ -19,14 +19,9 @@ class R < Formula
   depends_on 'readline'
   depends_on 'libtiff'
   depends_on 'jpeg'
-
   depends_on 'valgrind' if valgrind?
 
-  def options
-    [
-      ['--with-valgrind', 'Compile an unoptimized build with support for the Valgrind debugger.']
-    ]
-  end
+  option 'with-valgrind', 'Compile an unoptimized build with support for the Valgrind debugger.'
 
   def install
     if valgrind?
@@ -39,12 +34,10 @@ class R < Formula
     ENV['OBJC'] = ENV['CC']
     ENV['OBJCFLAGS'] = ENV['CFLAGS']
 
-    args = [
-      "--prefix=#{prefix}",
-      "--with-aqua",
-      "--enable-R-framework",
-      "--with-lapack"
-    ]
+    args = ["--prefix=#{prefix}",
+            "--with-aqua",
+            "--enable-R-framework",
+            "--with-lapack"]
     args << '--with-valgrind-instrumentation=2' if valgrind?
 
     system "./configure", *args

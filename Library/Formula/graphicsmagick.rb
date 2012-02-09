@@ -42,16 +42,12 @@ class Graphicsmagick < Formula
     path.extname == '.la'
   end
 
-  def options
-    [
-      ['--with-ghostscript', 'Compile against ghostscript (not recommended.)'],
-      ['--without-magick-plus-plus', "Don't build C++ library."],
-      ['--use-wmf', 'Compile with libwmf support.'],
-      ['--with-quantum-depth-8', 'Compile with a quantum depth of 8 bit'],
-      ['--with-quantum-depth-16', 'Compile with a quantum depth of 16 bit'],
-      ['--with-quantum-depth-32', 'Compile with a quantum depth of 32 bit'],
-    ]
-  end
+  option 'with-ghostscript', 'Compile against ghostscript (not recommended.)'
+  option 'without-magick-plus-plus', "Don't build C++ library."
+  option 'use-wmf', 'Compile with libwmf support.'
+  option 'with-quantum-depth-8', 'Compile with a quantum depth of 8 bit.'
+  option 'with-quantum-depth-16', 'Compile with a quantum depth of 16 bit.'
+  option 'with-quantum-depth-32', 'Compile with a quantum depth of 32 bit.'
 
   def install
     ENV.x11

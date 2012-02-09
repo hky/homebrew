@@ -5,12 +5,8 @@ class Udunits < Formula
   homepage 'http://www.unidata.ucar.edu/software/udunits/'
   md5 'daf894f3e4fbf757a459ce83b373424e'
 
-  def options
-    [
-      ["--html-docs", "Installs html documentation"],
-      ["--pdf-docs", "Installs pdf documentation "]
-    ]
-  end
+  option "html-docs", "Install html documentation."
+  option "pdf-docs", "Install pdf documentation."
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"

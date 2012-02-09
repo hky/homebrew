@@ -5,9 +5,7 @@ class Qi < Formula
   homepage 'http://www.lambdassociates.org/'
   md5 '3a0b5c56d0f107f80f5bca11b82a4d59'
 
-  def options
-    [['--SBCL', 'Use SBCL instead of CLISP']]
-  end
+  option 'SBCL', 'Use SBCL instead of CLISP.'
 
   if ARGV.include? '--SBCL'
     depends_on 'sbcl'
@@ -26,6 +24,6 @@ class Qi < Formula
       prefix.install ['Lisp/Qi.mem']
     end
     system "chmod 755 qi"
-    bin.install ['qi']
+    bin.install 'qi'
   end
 end

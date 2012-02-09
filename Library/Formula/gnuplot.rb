@@ -14,14 +14,10 @@ class Gnuplot < Formula
   depends_on 'gd' unless ARGV.include? "--nogd"
   depends_on 'wxmac' if ARGV.include? "--wx"
 
-  def options
-    [
-      ["--pdf", "Build with pdflib-lite support."],
-      ["--wx", "Build with wxWidgets support."],
-      ["--nolua", "Build without lua support."],
-      ["--nogd", "Build without gd support."]
-    ]
-  end
+  option "pdf", "Build with pdflib-lite support."
+  option "wx", "Build with wxWidgets support."
+  option "nolua", "Build without lua support."
+  option "nogd", "Build without gd support."
 
   def install
     # Help configure find libraries

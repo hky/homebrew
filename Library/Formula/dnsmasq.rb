@@ -5,11 +5,9 @@ class Dnsmasq < Formula
   homepage 'http://www.thekelleys.org.uk/dnsmasq/doc.html'
   md5 'd10faeb409717eae94718d7716ca63a4'
 
-  def options
-    [['--with-idn', "Compile with IDN support"]]
-  end
-
   depends_on "libidn" if ARGV.include? '--with-idn'
+
+  option 'with-idn', "Compile with IDN support"
 
   def install
     ENV.deparallelize

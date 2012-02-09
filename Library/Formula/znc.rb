@@ -14,9 +14,7 @@ class Znc < Formula
   skip_clean 'bin/znc-config'
   skip_clean 'bin/znc-buildmod'
 
-  def options
-    [['--enable-debug', "Compile ZNC with --enable-debug"]]
-  end
+  option 'enable-debug', "Compile ZNC with --enable-debug"
 
   def install
     if ARGV.build_head?

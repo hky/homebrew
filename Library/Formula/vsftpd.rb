@@ -5,11 +5,7 @@ class Vsftpd < Formula
   md5 '2ea5d19978710527bb7444d93b67767a'
   homepage 'https://security.appspot.com/vsftpd.html'
 
-  def options
-    [
-      ["--openssl", "build with OpenSSL"],
-    ]
-  end
+  option "openssl", "Build with OpenSSL."
 
   # Patch so vsftpd doesn't depend on UTMPX, and can't find OS X's PAM library.
   def patches; DATA; end

@@ -14,13 +14,9 @@ class Mjpegtools < Formula
 
   # mjpegtools's binaries will fail with missing symbol errors
   # when stripped
-  skip_clean ['bin']
+  skip_clean 'bin'
 
-  def options
-    [
-      ["--without-x", "Build without X support"]
-    ]
-  end
+  option "without-x", "Build without X support."
 
   def install
     ENV.x11

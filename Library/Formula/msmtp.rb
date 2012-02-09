@@ -5,14 +5,12 @@ class Msmtp < Formula
   homepage 'http://msmtp.sourceforge.net'
   md5 '35734268c883aa06388742f902d95676'
 
+  option 'with-macosx-keyring', "Support Mac OS X Keyring."
+
   depends_on 'pkg-config' => :build
 
-  def options
-    [['--with-macosx-keyring', "Support Mac OS X Keyring"]]
-  end
-
   def install
-    args = [ "--disable-dependency-tracking", "--prefix=#{prefix}" ]
+    args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
     args << "--with-macosx-keyring" if ARGV.include? '--with-macosx-keyring'
 
     system "./configure", *args

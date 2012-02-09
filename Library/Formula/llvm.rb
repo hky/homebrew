@@ -3,7 +3,6 @@ require 'formula'
 def build_clang?; ARGV.include? '--with-clang'; end
 def build_all_targets?; ARGV.include? '--all-targets'; end
 def build_analyzer?; ARGV.include? '--analyzer'; end
-def build_universal?; ARGV.build_universal?; end
 def build_shared?; ARGV.include? '--shared'; end
 def build_rtti?; ARGV.include? '--rtti'; end
 def build_jit?; ARGV.include? '--jit'; end
@@ -21,6 +20,14 @@ class Llvm < Formula
   url       'http://llvm.org/releases/3.0/llvm-3.0.tar.gz'
   md5       'a8e5f5f1c1adebae7b4a654c376a6005'
 
+  option "universal"
+  option 'with-clang', 'Build clang.'
+  option 'analyzer', 'Build clang analyzer.'
+  option 'shared', 'Build shared library.'
+  option 'all-targets', 'Build all target backends.'
+  option 'rtti', 'Build with RTTI information.'
+  option 'jit', 'Build with Just In Time (JIT) compiler functionality.'
+
   def patches
     # changes the link options for the shared library build
     # to use the preferred way to build libraries in Mac OS X
@@ -28,18 +35,8 @@ class Llvm < Formula
     DATA if build_shared?
   end
 
-  def options
-    [['--with-clang', 'Build clang'],
-     ['--analyzer', 'Build clang analyzer'],
-     ['--shared', 'Build shared library'],
-     ['--all-targets', 'Build all target backends'],
-     ['--rtti', 'Build with RTTI information'],
-     ['--universal', 'Build both i386 and x86_64 architectures'],
-     ['--jit', 'Build with Just In Time (JIT) compiler functionality']]
-  end
-
   def install
-    if build_shared? && build_universal?
+    if build_shared? && build.universal?
       onoe "Cannot specify both shared and universal (will not build)"
       exit 1
     end
@@ -48,33 +45,31 @@ class Llvm < Formula
       Clang.new("clang").brew { (buildpath+'tools/clang').install Dir['*'] }
     end
 
-    if build_universal?
+    if build.universal?
       ENV['UNIVERSAL'] = '1'
       ENV['UNIVERSAL_ARCH'] = 'i386 x86_64'
     end
 
     ENV['REQUIRES_RTTI'] = '1' if build_rtti?
 
-    configure_options = [
+    args = [
       "--prefix=#{prefix}",
       "--enable-optimized",
       # As of LLVM 3.0, the only bindings offered are for OCaml and attempting
       # to build these when Homebrew's OCaml is installed results in errors.
-      #
       # See issue #8947 for details.
-      "--enable-bindings=none"
-    ]
+      "--enable-bindings=none"]
 
     if build_all_targets?
-      configure_options << "--enable-targets=all"
+      args << "--enable-targets=all"
     else
-      configure_options << "--enable-targets=host-only"
+      args << "--enable-targets=host-only"
     end
 
-    configure_options << "--enable-shared" if build_shared?
-    configure_options << "--enable-jit" if build_jit?
+    args << "--enable-shared" if build_shared?
+    args << "--enable-jit" if build_jit?
 
-    system "./configure", *configure_options
+    system "./configure", *args
 
     system "make" # separate steps required, otherwise the build fails
     system "make install"
@@ -100,7 +95,7 @@ class Llvm < Formula
   end
 
   def caveats; <<-EOS.undent
-    If you already have LLVM installed, then "brew upgrade llvm" might not work.
+    If you already have LLVM installed, then `brew upgrade llvm` might not work.
     Instead, try:
         brew rm llvm && brew install llvm
     EOS

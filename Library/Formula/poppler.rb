@@ -18,12 +18,8 @@ class Poppler < Formula
   depends_on 'glib' if glib?
   depends_on 'cairo' if glib? # Needs a newer Cairo build than OS X 10.6.7 provides
 
-  def options
-    [
-      ["--with-qt4", "Build Qt backend"],
-      ["--with-glib", "Build Glib backend"]
-    ]
-  end
+  option "with-glib", "Build Glib backend."
+  option "with-qt4", "Build Qt backend."
 
   def install
     ENV.x11 # For Fontconfig headers

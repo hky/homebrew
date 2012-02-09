@@ -6,9 +6,7 @@ class GnuWhich < Formula
   homepage 'http://carlo17.home.xs4all.nl/which/'
   md5 '95be0501a466e515422cde4af46b2744'
 
-  def options
-    [['--default-names', "Do NOT prepend 'g' to the binary; will override system utils."]]
-  end
+  option 'default-names', "Do NOT prepend 'g' to the binary. Overrides system which."
 
   def install
     args = ["--prefix=#{prefix}", "--disable-dependency-tracking"]

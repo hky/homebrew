@@ -12,6 +12,9 @@ class Glib < Formula
 
   fails_with_llvm "Undefined symbol errors while linking", :build => 2334
 
+  option 'universal'
+  option 'test', 'Build a debug build and run tests. NOTE: Tests may hang on "unix-streams".'
+
   def patches
     mp = "https://trac.macports.org/export/87537/trunk/dports/devel/glib2/files/"
     {
@@ -27,15 +30,8 @@ class Glib < Formula
     }
   end
 
-  def options
-  [
-    ['--universal', 'Build universal binaries.'],
-    ['--test', 'Build a debug build and run tests. NOTE: Tests may hang on "unix-streams".']
-  ]
-  end
-
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
 
     # indeed, amazingly, -w causes gcc to emit spurious errors for this package!
     ENV.enable_warnings
@@ -52,7 +48,7 @@ class Glib < Formula
       s.gsub! '@@PREFIX@@', HOMEBREW_PREFIX
     end
 
-    if ARGV.build_universal?
+    if build.universal?
       # autoconf 2.61 is fine don't worry about it
       inreplace ["aclocal.m4", "configure.ac"] do |s|
         s.gsub! "AC_PREREQ([2.62])", "AC_PREREQ([2.61])"

@@ -6,11 +6,9 @@ class Mdxmini < Formula
   version '20111115'
   md5 '80a3f96dbe84c19bf7e2042e7b8e819a'
 
-  depends_on 'sdl' unless ARGV.include? "--lib-only"
+  option "lib-only", "Do not build commandline player."
 
-  def options
-    [["--lib-only", "Do not build commandline player"]]
-  end
+  depends_on 'sdl' unless ARGV.include? "--lib-only"
 
   def install
     cd "jni/mdxmini" do

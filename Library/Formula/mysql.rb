@@ -13,17 +13,13 @@ class Mysql < Formula
 
   skip_clean :all # So "INSTALL PLUGIN" can work.
 
-  def options
-    [
-      ['--with-tests', "Build with unit tests."],
-      ['--with-embedded', "Build the embedded server."],
-      ['--with-libedit', "Compile with EditLine wrapper instead of readline"],
-      ['--with-archive-storage-engine', "Compile with the ARCHIVE storage engine enabled"],
-      ['--with-blackhole-storage-engine', "Compile with the BLACKHOLE storage engine enabled"],
-      ['--universal', "Make mysql a universal binary"],
-      ['--enable-local-infile', "Build with local infile loading support"]
-    ]
-  end
+  option "universal"
+  option 'with-tests', "Build with unit tests."
+  option 'with-embedded', "Build the embedded server."
+  option 'with-libedit', "Compile with EditLine wrapper instead of readline."
+  option 'with-archive-storage-engine', "Compile with the ARCHIVE storage engine enabled."
+  option 'with-blackhole-storage-engine', "Compile with the BLACKHOLE storage engine enabled."
+  option 'enable-local-infile', "Build with local infile loading support."
 
   def patches
     DATA
@@ -33,8 +29,7 @@ class Mysql < Formula
     # Make sure the var/mysql directory exists
     (var+"mysql").mkpath
 
-    args = [".",
-            "-DCMAKE_INSTALL_PREFIX=#{prefix}",
+    args = ["-DCMAKE_INSTALL_PREFIX=#{prefix}",
             "-DMYSQL_DATADIR=#{var}/mysql",
             "-DINSTALL_MANDIR=#{man}",
             "-DINSTALL_DOCDIR=#{doc}",
@@ -66,12 +61,12 @@ class Mysql < Formula
     args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if ARGV.include? '--with-blackhole-storage-engine'
 
     # Make universal for binding to universal applications
-    args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if ARGV.build_universal?
+    args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if build.universal?
 
     # Build with local infile loading support
     args << "-DENABLED_LOCAL_INFILE=1" if ARGV.include? '--enable-local-infile'
 
-    system "cmake", *args
+    system "cmake", ".", *args
     system "make"
     system "make install"
 

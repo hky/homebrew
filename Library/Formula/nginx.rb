@@ -20,12 +20,8 @@ class Nginx < Formula
     DATA
   end
 
-  def options
-    [
-      ['--with-passenger', "Compile with support for Phusion Passenger module"],
-      ['--with-webdav',    "Compile with support for WebDAV module"]
-    ]
-  end
+  option 'with-passenger', "Compile the Phusion Passenger module."
+  option 'with-webdav', "Compile the WebDAV module."
 
   def passenger_config_args
       passenger_root = `passenger-config --root`.chomp

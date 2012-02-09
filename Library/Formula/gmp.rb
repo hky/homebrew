@@ -6,21 +6,15 @@ class Gmp < Formula
   mirror 'http://ftp.gnu.org/gnu/gmp/gmp-5.0.4.tar.bz2'
   sha1 'ea4ea7c3f10436ef5ae7a75b3fad163a8b86edc0'
 
-  def options
-    [
-      ["--32-bit", "Build 32-bit only."],
-      ["--skip-check", "Do not run 'make check' to verify libraries."]
-    ]
-  end
+  option "32-bit"
+  option "skip-check", "Skips verification step. Not recommended."
 
   def install
     # Reports of problems using gcc 4.0 on Leopard
     # https://github.com/mxcl/homebrew/issues/issue/2302
     # Also force use of 4.2 on 10.6 in case a user has changed the default
     # Do not force if xcode > 4.2 since it does not have /usr/bin/gcc-4.2 as default
-    unless MacOS.xcode_version >= "4.2"
-      ENV.gcc_4_2
-    end
+    ENV.gcc_4_2 unless MacOS.xcode_version >= "4.2"
 
     args = ["--prefix=#{prefix}", "--enable-cxx"]
 

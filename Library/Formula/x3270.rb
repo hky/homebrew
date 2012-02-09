@@ -6,14 +6,10 @@ class X3270 < Formula
   version '3.3.12ga7'
   md5 '5a501ed84d522c02d3c7ed3e36a00d0a'
 
-  def options
-    [
-      ["--with-c3270",   "Include c3270 (curses-based version)"],
-      ["--with-s3270",   "Include s3270 (displayless version)"],
-      ["--with-tcl3270", "Include tcl3270 (integrated with Tcl)"],
-      ["--with-pr3287",  "Include pr3287 (printer emulation)"]
-    ]
-  end
+  option "with-c3270",   "Include c3270 (curses-based version)"
+  option "with-s3270",   "Include s3270 (displayless version)"
+  option "with-tcl3270", "Include tcl3270 (integrated with Tcl)"
+  option "with-pr3287",  "Include pr3287 (printer emulation)"
 
   def make_directory(directory)
     cd directory do

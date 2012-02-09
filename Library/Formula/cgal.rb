@@ -9,12 +9,9 @@ class Cgal < Formula
   depends_on 'boost'
   depends_on 'gmp'
   depends_on 'mpfr'
-
   depends_on 'qt' if ARGV.include? '--imaging'
 
-  def options
-    [['--imaging', "Build ImageIO and QT compoments of CGAL"]]
-  end
+  option 'imaging', "Build ImageIO and QT compoments of CGAL"
 
   def install
     args = ["-DCMAKE_INSTALL_PREFIX=#{prefix}",

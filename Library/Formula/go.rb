@@ -14,9 +14,7 @@ class Go < Formula
 
   skip_clean 'bin'
 
-  def options
-    [["--use-git", "Use git mirror instead of official hg repository"]]
-  end
+  option "use-git", "Use git mirror instead of official hg repository."
 
   def install
     prefix.install %w[src include test doc misc lib favicon.ico AUTHORS]

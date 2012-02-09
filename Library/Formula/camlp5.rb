@@ -7,9 +7,7 @@ class Camlp5 < Formula
 
   depends_on 'objective-caml'
 
-  def options
-    [['--strict', "Compile in strict mode"]]
-  end
+  option 'strict', "Compile in strict mode."
 
   def install
 

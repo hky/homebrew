@@ -5,9 +5,7 @@ class Libmikmod < Formula
   url 'https://github.com/mistydemeo/libmikmod.git', :tag => '446324a45a6d165b1941a4758f6cd221301b479e'
   version '3.2.0b2'
 
-  def options
-    [[ '--with-debug', 'Enable debugging symbols and build without optimization']]
-  end
+  option 'with-debug', 'Enable debugging symbols and build without optimization.'
 
   def patches
     # When aclocal is run on configure.in, it is told to use a macro AM_PATH_ESD that

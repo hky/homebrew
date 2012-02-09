@@ -5,9 +5,7 @@ class Httperf < Formula
   homepage 'http://code.google.com/p/httperf/'
   md5 '2968c36b9ecf3d98fc1f2c1c9c0d9341'
 
-  def options
-    [['--enable-debug', 'build with support for the --debug=N option']]
-  end
+  option 'enable-debug', 'Builds with debugging enabled.'
 
   def install
     debug = ARGV.include?('--enable-debug') ? '--enable-debug' : '--disable-debug'

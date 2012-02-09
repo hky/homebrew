@@ -17,14 +17,10 @@ class Emacs < Formula
     head 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk'
   end
 
-  def options
-    [
-      ["--cocoa", "Build a Cocoa version of emacs"],
-      ["--srgb", "Enable sRGB colors in the Cocoa version of emacs"],
-      ["--with-x", "Include X11 support"],
-      ["--use-git-head", "Use Savannah git mirror for HEAD builds"],
-    ]
-  end
+  option "cocoa", "Build a Cocoa version of emacs."
+  option "srgb", "Enable sRGB colors in the Cocoa version of emacs."
+  option "with-x", "Include X11 support."
+  option "use-git-head", "Use Savannah git mirror for HEAD builds."
 
   def patches
     p = []

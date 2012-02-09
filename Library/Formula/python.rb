@@ -22,13 +22,9 @@ class Python < Formula
   depends_on 'sqlite'   => :optional # Prefer over OS X's older version
   depends_on 'gdbm'     => :optional
 
-  def options
-    [
-      ["--framework", "Do a 'Framework' build instead of a UNIX-style build."],
-      ["--universal", "Build for both 32 & 64 bit Intel."],
-      ["--static", "Build static libraries."]
-    ]
-  end
+  option "universal"
+  option "framework", "Do a framework build instead of a UNIX-style build."
+  option "static", "Build static libraries."
 
   def patches
     # fix for recognizing gdbm 1.9.x databases
@@ -46,10 +42,7 @@ class Python < Formula
     end
 
     args = ["--prefix=#{prefix}"]
-
-    if ARGV.build_universal?
-      args << "--enable-universalsdk=/" << "--with-universal-archs=intel"
-    end
+    args << "--enable-universalsdk=/" << "--with-universal-archs=intel" if build.universal?
 
     if build_framework?
       args << "--enable-framework=#{prefix}/Frameworks"

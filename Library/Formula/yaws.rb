@@ -7,12 +7,8 @@ class Yaws < Formula
 
   depends_on 'erlang'
 
-  def options
-    [
-      ["--with-yapp", "Build and install yaws applications"],
-      ['--32-bit', "Build 32-bit only."]
-    ]
-  end
+  option 'with-yapp', 'Build and install yaws applications'
+  option '32-bit'
 
   def install
     if ARGV.build_32_bit?

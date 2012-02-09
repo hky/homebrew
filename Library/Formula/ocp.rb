@@ -10,13 +10,9 @@ class Ocp < Formula
   depends_on "flac" unless ARGV.include? "--without-flac"
   depends_on "adplug" if ARGV.include? "--with-adplug"
 
-  def options
-    [
-      ["--without-mad", "disable mad mpeg audio support"],
-      ["--without-flac", "disable FLAC support"],
-      ["--with-adplug", "enable adplug support"],
-    ]
-  end
+  option "without-mad", "Disable mad mpeg support."
+  option "without-flac", "Disable FLAC support."
+  option "with-adplug", "Enable adplug support."
 
   def install
     ENV.deparallelize

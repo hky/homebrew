@@ -12,9 +12,7 @@ class Cfitsio < Formula
   version '3.29'
   md5 'bba93808486cf5edac236a941283b3c3'
 
-  def options
-    [['--with-examples', "Compile and install example programs."]]
-  end
+  option 'with-examples', "Compile and install example programs."
 
   def install
     # --disable-debug and --disable-dependency-tracking are not recognized by configure

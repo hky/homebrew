@@ -11,9 +11,7 @@ class Shen < Formula
     depends_on 'clisp'
   end
 
-  def options
-    [["--sbcl", "Build SBCL version."]]
-  end
+  option "sbcl", "Build SBCL version."
 
   def install
     case

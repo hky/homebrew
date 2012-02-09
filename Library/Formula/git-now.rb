@@ -2,8 +2,8 @@ require 'formula'
 
 class GitNow < Formula
   homepage 'https://github.com/iwata/git-now'
-  url 'https://github.com/iwata/git-now.git', :tag => 'v0.1.0.9'
-  version '0.1.0.9'
+  url 'https://github.com/iwata/git-now/tarball/v0.1.1.0'
+  md5 'e9b6bd7448796120594a9751f835bfe9'
 
   head 'https://github.com/iwata/git-now.git', :branch => 'develop'
 

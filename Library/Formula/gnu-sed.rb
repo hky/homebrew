@@ -6,9 +6,7 @@ class GnuSed < Formula
   homepage 'http://www.gnu.org/software/sed/'
   md5 '7d310fbd76e01a01115075c1fd3f455a'
 
-  def options
-    [['--default-names', "Do NOT prepend 'g' to the binary; will override system utils."]]
-  end
+  option 'default-names', "Do NOT prepend 'g' to the binary. Overrides system sed."
 
   def install
     args = ["--prefix=#{prefix}", "--disable-dependency-tracking"]

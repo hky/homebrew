@@ -15,12 +15,10 @@ class Rrdtool < Formula
   # Can use lua if it is found, but don't force users to install
   depends_on 'lua' => :optional if ARGV.include? "--lua"
 
+  option "lua", "Compile with lua support."
+
   # Ha-ha, but sleeping is annoying when running configure a lot
   def patches; DATA; end
-
-  def options
-    [["--lua", "Compile with lua support."]]
-  end
 
   def install
     ENV.libxml2

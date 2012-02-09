@@ -10,9 +10,7 @@ class Liblas < Formula
   depends_on 'gdal'
   depends_on 'boost'
 
-  def options
-    [['--with-test', 'Verify during install with `make test`.']]
-  end
+  option 'with-test', 'Verify during install with `make test`.'
 
   def install
     mkdir 'macbuild' do

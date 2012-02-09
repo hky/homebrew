@@ -9,15 +9,11 @@ class Libxml2 < Formula
 
   fails_with_llvm "Undefined symbols when linking", :build => "2326"
 
-  def options
-    [
-      ['--with-python', 'Compile the libxml2 Python 2.x modules'],
-      ['--universal', 'Build a universal binary.']
-    ]
-  end
+  option "universal"
+  option 'with-python', 'Compile the libxml2 Python 2.x modules.'
 
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
 
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
     if ARGV.include? '--with-python'

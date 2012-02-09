@@ -11,9 +11,7 @@ class Luajit < Formula
 
   fails_with_llvm "_Unwind_Exception_Class undeclared", :build => 2336
 
-  def options
-    [["--debug", "Build with debugging symbols."]]
-  end
+  option "debug", "Build with debugging symbols."
 
   def install
     if ARGV.include? '--debug'

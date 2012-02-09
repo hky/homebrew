@@ -10,9 +10,7 @@ class X264 < Formula
 
   depends_on 'yasm' => :build
 
-  def options
-    [["--10-bit", "Make a 10-bit x264. (default: 8-bit)"]]
-  end
+  option "10-bit", "Make a 10-bit x264. (default: 8-bit)"
 
   def install
     # Having this set can fail the endian test!

@@ -11,14 +11,10 @@ class Xapian < Formula
   homepage 'http://xapian.org'
   sha1 'c6c5c5b14d5d64481858ac2b181429a9b8bdc9a1'
 
-  def options
-    [
-      ["--ruby", "Ruby bindings"],
-      ["--python", "Python bindings"],
-      ["--php", "PHP bindings"],
-      ["--java", "Java bindings"],
-    ]
-  end
+  option "java", "Java bindings."
+  option "php", "PHP bindings."
+  option "python", "Python bindings."
+  option "ruby", "Ruby bindings."
 
   def skip_clean? path
     path.extname == '.la'

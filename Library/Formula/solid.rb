@@ -5,12 +5,8 @@ class Solid < Formula
   homepage 'http://www.dtecta.com/'
   sha1 'bd0afef7842f826c270cff32fc23994aec0b0d65'
 
-  def options
-    [
-      [ '--enable-doubles', 'Use internal double precision floats' ],
-      [ '--enable-tracer', 'Use rounding error tracer' ]
-    ]
-  end
+  option 'enable-doubles', 'Use internal double precision floats.'
+  option 'enable-tracer', 'Use rounding error tracer.'
 
   def install
     args = ["--disable-dependency-tracking",

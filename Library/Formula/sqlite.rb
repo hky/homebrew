@@ -20,15 +20,11 @@ class Sqlite < Formula
 
   depends_on 'readline' => :optional
 
-  def options
-  [
-    ["--with-docs", "Install HTML documentation"],
-    ["--with-rtree", "Enable the R*Tree index module"],
-    ["--with-fts", "Enable the FTS Module"],
-    ["--universal", "Build a universal binary"],
-    ["--with-functions", "Enable more math and string functions for SQL queries"]
-  ]
-  end
+  option "universal"
+  option "with-docs", "Install HTML documentation."
+  option "with-rtree", "Enable the R*Tree index module."
+  option "with-fts", "Enable the FTS Module."
+  option "with-functions", "Enable more math and string functions for SQL queries."
 
   def install
     # O2 and O3 leads to corrupt/invalid rtree indexes
@@ -42,7 +38,7 @@ class Sqlite < Formula
     ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_COLUMN_METADATA"
     ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_STAT3"
 
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
 
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking",
                           (ARGV.include? "--with-functions") ? "--enable-dynamic-extensions" : ""

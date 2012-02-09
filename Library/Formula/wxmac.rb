@@ -9,6 +9,7 @@ class Wxpython < Formula
 end
 
 class Wxmac < Formula
+  homepage 'http://www.wxwidgets.org'
   url 'http://downloads.sourceforge.net/project/wxwindows/2.8.12/wxMac-2.8.12.tar.bz2'
   md5 '876000a9a9742c3c75a2597afbcb8856'
 
@@ -18,14 +19,7 @@ class Wxmac < Formula
     md5 '11f5a423c05c43b4ff8c9f11f1986f04'
   end
 
-  homepage 'http://www.wxwidgets.org'
-
-  def options
-    [
-      ['--python', 'Build Python bindings'],
-      ['--devel', 'Using unstable 2.9.x series (But 64-bit & cocoa support!)']
-    ]
-  end
+  option 'python', 'Build Python bindings.'
 
   def test_python_arch
     # wxPython 2.8 does not yet support 64bit. But 2.9 with (--devel) does!

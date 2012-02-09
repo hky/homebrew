@@ -14,9 +14,7 @@ class Ledger < Formula
   depends_on 'pcre'
   depends_on 'expat'
 
-  def options
-    [['--no-python', 'Disable Python support']]
-  end
+  option 'no-python', 'Disable Python support.'
 
   def install
     # find Homebrew's libpcre

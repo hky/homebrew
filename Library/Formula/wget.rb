@@ -9,9 +9,7 @@ class Wget < Formula
   depends_on "openssl" if MacOS.leopard?
   depends_on "libidn" if ARGV.include? "--enable-iri"
 
-  def options
-    [["--enable-iri", "Enable iri support."]]
-  end
+  option "enable-iri", "Enable iri support."
 
   def install
     args = ["--disable-debug",

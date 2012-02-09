@@ -14,13 +14,9 @@ class Ruby < Formula
   # Stripping breaks dynamic linking
   skip_clean :all
 
-  def options
-    [
-      ["--with-suffix", "Add a 19 suffix to commands"],
-      ["--with-doc", "Install with the Ruby documentation"],
-      ["--universal", "Compile a universal binary (arch=x86_64,i386)"],
-    ]
-  end
+  option "universal"
+  option "with-suffix", "Add a `19` suffix to commands."
+  option "with-doc", "Install documentation."
 
   def install
     ruby_lib = HOMEBREW_PREFIX+"lib/ruby"
@@ -47,7 +43,7 @@ class Ruby < Formula
             "--enable-shared"]
 
     args << "--program-suffix=19" if ARGV.include? "--with-suffix"
-    args << "--with-arch=x86_64,i386" if ARGV.build_universal?
+    args << "--with-arch=x86_64,i386" if build.universal?
 
     # Put gem, site and vendor folders in the HOMEBREW_PREFIX
 

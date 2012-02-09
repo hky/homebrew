@@ -15,12 +15,8 @@ class Hdf5 < Formula
 
   depends_on 'szip'
 
-  def options
-    [
-      ['--enable-fortran', 'Compile Fortran bindings at the expense of having shared libraries'],
-      ['--enable-threadsafe', 'Trade performance and C++ or Fortran support for thread safety']
-    ]
-  end
+  option 'enable-fortran', 'Compile Fortran bindings at the expense of having shared libraries.'
+  option 'enable-threadsafe', 'Trade performance and C++ or Fortran support for thread safety.'
 
   def install
     ENV.fortran if fortran?

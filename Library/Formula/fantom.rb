@@ -5,10 +5,8 @@ class Fantom < Formula
   url 'http://fan.googlecode.com/files/fantom-1.0.61.zip'
   md5 '4ead834efae383be885401a747edc6af'
 
-  def options
-    [['--with-src', 'Also install fantom source'],
-     ['--with-examples', 'Also install fantom examples']]
-  end
+  option 'with-src', 'Also install source.'
+  option 'with-examples', 'Also install examples.'
 
   def install
     rm_f Dir["bin/*.exe", "lib/dotnet/*"]

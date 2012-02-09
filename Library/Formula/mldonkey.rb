@@ -7,13 +7,11 @@ class Mldonkey < Formula
 
   depends_on 'objective-caml'
 
+  option "with-x", "Build with X11 support."
+
   if ARGV.include? "--with-x"
     depends_on 'librsvg'
     depends_on 'lablgtk'
-  end
-
-  def options
-    [["--with-x", "Build mldonkey with X11 support"]]
   end
 
   def install

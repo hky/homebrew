@@ -61,15 +61,11 @@ class Gdal < Formula
     depends_on "xz" # get liblzma compression algorithm library from XZutils
   end
 
-  def options
-    [
-      ['--complete', 'Use additional Homebrew libraries to provide more drivers.'],
-      ['--with-postgres', 'Specify PostgreSQL as a dependency.'],
-      ['--with-mysql', 'Specify MySQL as a dependency.'],
-      ['--without-python', 'Build without Python support (disables a lot of tools).'],
-      ['--enable-opencl', 'Build with support for OpenCL.']
-    ]
-  end
+  option 'complete', 'Use additional Homebrew libraries to provide more drivers.'
+  option 'with-postgres', 'Specify PostgreSQL as a dependency.'
+  option 'with-mysql', 'Specify MySQL as a dependency.'
+  option 'without-python', 'Build without Python support (disables a lot of tools).'
+  option 'enable-opencl', 'Build with support for OpenCL.'
 
   def get_configure_args
     args = [

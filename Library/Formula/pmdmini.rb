@@ -6,11 +6,9 @@ class Pmdmini < Formula
   version '20120115'
   md5 '7d8152d5b59bfc2b535972fe6b5096b4'
 
-  depends_on 'sdl' unless ARGV.include? "--lib-only"
+  option "lib-only", "Do not build command-line player."
 
-  def options
-    [["--lib-only", "Do not build commandline player"]]
-  end
+  depends_on 'sdl' unless ARGV.include? "--lib-only"
 
   def install
     cd "jni/pmdmini" do

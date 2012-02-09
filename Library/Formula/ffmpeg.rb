@@ -13,12 +13,8 @@ class Ffmpeg < Formula
 
   fails_with_llvm 'Undefined symbols when linking libavfilter'
 
-  def options
-    [
-      ["--with-tools", "Install additional FFmpeg tools."],
-      ["--with-ffplay", "Build ffplay."]
-    ]
-  end
+  option "with-tools", "Install additional FFmpeg tools."
+  option "with-ffplay", "Build ffplay."
 
   depends_on 'yasm' => :build
   depends_on 'x264' => :optional

@@ -9,15 +9,13 @@ class GitCola < Formula
 
   depends_on 'pyqt'
 
-  def options
-    [['--build-docs', "Build man pages using asciidoc and xmlto"]]
-  end
-
+  # Additional dependencies for building manpages.
   if ARGV.include? '--build-docs'
-    # these are needed to build man pages
     depends_on 'asciidoc'
     depends_on 'xmlto'
   end
+
+  option 'build-docs', "Build man pages using asciidoc and xmlto."
 
   def install
     ENV.prepend 'PYTHONPATH', "#{HOMEBREW_PREFIX}/lib/python", ':'

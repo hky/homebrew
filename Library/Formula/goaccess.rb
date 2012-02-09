@@ -10,9 +10,7 @@ class Goaccess < Formula
   depends_on 'glib'
   depends_on 'geoip' if ARGV.include? "--enable-geoip"
 
-  def options
-    [['--enable-geoip', "Enable IP location information using GeoIP"]]
-  end
+  option 'enable-geoip', "Enable IP location information using GeoIP."
 
   def install
     args = ["--prefix=#{prefix}",

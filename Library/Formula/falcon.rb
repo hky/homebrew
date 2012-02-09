@@ -10,12 +10,8 @@ class Falcon < Formula
   depends_on 'cmake' => :build
   depends_on 'pcre'
 
-  def options
-    [
-      ['--editline', "Use editline instead of readline"],
-      ['--feathers', "Include feathers (extra libraries)"]
-    ]
-  end
+  option 'editline', "Use editline instead of readline."
+  option 'feathers', "Include feathers (extra libraries)."
 
   def install
     args = ["-DCMAKE_BUILD_TYPE=Release",

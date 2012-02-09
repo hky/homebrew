@@ -73,11 +73,7 @@ class Salt < Formula
   homepage 'http://supernovae.in2p3.fr/~guy/salt/'
   md5 'bf227accaf89a751c28d0bf1ed2b0851'
 
-  def options
-    [
-     ['--with-data', 'Install model data']
-    ]
-  end
+  option 'with-data', 'Install model data.'
 
   def install_subbrew(subbrew, installdir)
     subbrew.new.brew do

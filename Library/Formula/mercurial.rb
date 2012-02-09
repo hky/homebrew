@@ -6,11 +6,9 @@ class Mercurial < Formula
   sha1 'f649a0b33e0cafb3e5867a2e970f41eb887d3fab'
   head 'http://selenic.com/repo/hg', :using => :hg
 
-  depends_on 'docutils' => :python if ARGV.build_head? or ARGV.include? "--doc"
+  option "doc", "build the documentation. Depends on 'docutils' module."
 
-  def options
-    [["--doc", "build the documentation. Depends on 'docutils' module."]]
-  end
+  depends_on 'docutils' => :python if ARGV.build_head? or ARGV.include? "--doc"
 
   # Remove the error codes on things like "no changes found"
   # Will be in next release

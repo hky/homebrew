@@ -4,13 +4,9 @@ class V8cgi < Formula
   head 'http://v8cgi.googlecode.com/svn/trunk/'
   homepage 'http://code.google.com/p/v8cgi/'
 
-  def options
-    [
-      ["--with-dom", "Enable DOM."],
-      ["--with-gd", "Enable GD."],
-      ["--with-sqlite", "Enable SQLite."]
-    ]
-  end
+  option "with-dom", "Enable DOM."
+  option "with-gd", "Enable GD."
+  option "with-sqlite", "Enable SQLite."
 
   depends_on 'scons' => :build
   depends_on 'v8'

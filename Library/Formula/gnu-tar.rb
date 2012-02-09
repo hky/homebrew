@@ -6,9 +6,7 @@ class GnuTar < Formula
   homepage 'http://www.gnu.org/software/tar/'
   md5 '00d1e769c6af702c542cca54b728920d'
 
-  def options
-    [['--default-names', "Do NOT prepend 'g' to the binary; will override system tar."]]
-  end
+  option 'default-names', "Do NOT prepend 'g' to the binary. Overrides system tar."
 
   def install
     args = [ "--prefix=#{prefix}" , "--mandir=#{man}" ]

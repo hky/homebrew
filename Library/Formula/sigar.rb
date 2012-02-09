@@ -5,13 +5,9 @@ class Sigar < Formula
   head 'https://github.com/hyperic/sigar.git'
   homepage 'http://sigar.hyperic.com/'
 
-  def options
-    [
-      ["--perl", "Build Perl bindings."],
-      ["--python", "Build Python bindings."],
-      ["--ruby", "Build Ruby bindings."],
-    ]
-  end
+  option "perl", "Build Perl bindings."
+  option "python", "Build Python bindings."
+  option "ruby", "Build Ruby bindings."
 
   def java_script; <<-EOS.undent
     #!/bin/sh

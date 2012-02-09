@@ -43,14 +43,10 @@ class Erlang < Formula
   # may as well skip bin too, everything is just shell scripts
   skip_clean ['lib', 'bin']
 
-  def options
-    [
-      ['--disable-hipe', "Disable building hipe; fails on various OS X systems."],
-      ['--halfword', 'Enable halfword emulator (64-bit builds only)'],
-      ['--time', '"brew test --time" to include a time-consuming test.'],
-      ['--no-docs', 'Do not install documentation.']
-    ]
-  end
+  option 'disable-hipe', "Disable building hipe; fails on various OS X systems."
+  option 'halfword', 'Enable halfword emulator (64-bit builds only).'
+  option 'time', '`brew test --time` to include a time-consuming test.'
+  option 'no-docs', 'Do not install documentation.'
 
   fails_with_llvm :build => 2334
 
@@ -82,7 +78,8 @@ class Erlang < Formula
 
     if MacOS.prefer_64_bit?
       args << "--enable-darwin-64bit"
-      args << "--enable-halfword-emulator" if ARGV.include? '--halfword' # Does not work with HIPE yet. Added for testing only
+      # Does not work with HIPE yet. Added for testing only.
+      args << "--enable-halfword-emulator" if ARGV.include? '--halfword'
     end
 
     system "./configure", *args
@@ -103,7 +100,7 @@ class Erlang < Formula
     `#{bin}/erl -noshell -eval 'crypto:start().' -s init stop`
 
     # This test takes some time to run, but per bug #120 should finish in
-    # "less than 20 minutes". It takes a few minutes on a Mac Pro (2009).
+    # "less than 20 minutes". It takes a few minutes on a 2009 8-core Mac Pro.
     if ARGV.include? "--time"
       `#{bin}/dialyzer --build_plt -r #{lib}/erlang/lib/kernel-2.15/ebin/`
     end

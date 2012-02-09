@@ -5,7 +5,7 @@ class Phash < Formula
   homepage 'http://www.phash.org/'
   sha1 '9710b8a1d4d24e7fc3ac43c33eac8e89d9e727d7'
 
-  depends_on 'cimg' unless  ARGV.include? "--disable-image-hash" and ARGV.include? "--disable-video-hash"
+  depends_on 'cimg' unless ARGV.include? "--disable-image-hash" and ARGV.include? "--disable-video-hash"
   depends_on 'ffmpeg' unless ARGV.include? "--disable-video-hash"
 
   unless ARGV.include? "--disable-audio-hash"
@@ -14,13 +14,9 @@ class Phash < Formula
     depends_on 'mpg123'
   end
 
-  def options
-    [
-     ["--disable-image-hash", "Disable image hash"],
-     ["--disable-video-hash", "Disable video hash"],
-     ["--disable-audio-hash", "Disable audio hash"]
-    ]
-  end
+  option "disable-image-hash", "Disable image hash."
+  option "disable-video-hash", "Disable video hash."
+  option "disable-audio-hash", "Disable audio hash."
 
   # fix compilation on ffmpeg <= 0.7
   # source: https://launchpad.net/ubuntu/+source/libphash/0.9.4-1.2

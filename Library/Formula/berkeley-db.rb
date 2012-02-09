@@ -5,9 +5,7 @@ class BerkeleyDb < Formula
   homepage 'http://www.oracle.com/technology/products/berkeley-db/index.html'
   md5 '76fcbfeebfcd09ba0b4d96bfdf8d884d'
 
-  def options
-    [['--without-java', 'Compile without Java support.']]
-  end
+  option 'without-java', 'Compile without Java support.'
 
   def install
     # BerkeleyDB dislikes parallel builds

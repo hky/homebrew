@@ -101,11 +101,7 @@ class Tesseract < Formula
   # mftraining has a missing symbols error when cleaned
   skip_clean 'bin'
 
-  def options
-    [
-      ["--all-languages", "Install recognition data for all languages"]
-    ]
-  end
+  option "all-languages", "Install recognition data for all languages."
 
   def install
     system "/bin/sh autogen.sh"

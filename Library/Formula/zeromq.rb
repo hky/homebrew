@@ -13,12 +13,8 @@ class Zeromq < Formula
   fails_with_llvm "Compiling with LLVM gives a segfault while linking.",
                   :build => 2326 if MacOS.snow_leopard?
 
-  def options
-    [
-      ['--with-pgm', 'Build with PGM extension'],
-      ['--universal', 'Build as a Universal Intel binary.']
-    ]
-  end
+  option 'universal'
+  option 'with-pgm', 'Build PGM extension.'
 
   def build_fat
     # make 32-bit
@@ -39,7 +35,7 @@ class Zeromq < Formula
   def install
     system "./autogen.sh" if ARGV.build_head?
 
-    if ARGV.build_universal?
+    if build.universal?
       build_fat
     else
       args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]

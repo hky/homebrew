@@ -10,14 +10,12 @@ class Graphviz < Formula
   homepage 'http://graphviz.org/'
 
   depends_on 'pkg-config' => :build
-
   depends_on 'pango' if ARGV.include? '--with-pangocairo'
   depends_on 'swig' if build_bindings?
 
-  def options
-    [["--with-pangocairo", "Build with Pango/Cairo for alternate PDF output"],
-     ["--with[out]-bindings", "Build Perl/Python/Ruby/etc. bindings (default on Lion; may not work on earlier systems)"]]
-  end
+  option "with-pangocairo", "Build with Pango/Cairo for alternate PDF output."
+  option "with-bindings", "Build Perl/Python/Ruby/etc. bindings on Leopard and Snow Leopard."
+  option "without-bindings", "Build Perl/Python/Ruby/etc. bindings on Lion."
 
   def patches
     { :p0 => "https://trac.macports.org/export/78507/trunk/dports/graphics/graphviz-gui/files/patch-project.pbxproj.diff",

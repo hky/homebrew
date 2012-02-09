@@ -8,9 +8,7 @@ class TokyoTyrant < Formula
   depends_on 'tokyo-cabinet'
   depends_on 'lua' unless ARGV.include? "--no-lua"
 
-  def options
-    [["--no-lua", "Disable Lua support."]]
-  end
+  option "no-lua", "Disable Lua support."
 
   def install
     args = ["--prefix=#{prefix}"]

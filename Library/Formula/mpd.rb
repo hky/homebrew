@@ -18,9 +18,7 @@ class Mpd < Formula
   depends_on 'libmms' => :optional
   depends_on 'libzzip' => :optional
 
-  def options
-    [["--lastfm", "Compile with experimental support for Last.fm radio"]]
-  end
+  option "lastfm", "Compile with experimental support for Last.fm radio."
 
   def install
     # make faad.h findable (when brew is used elsewhere than /usr/local/)

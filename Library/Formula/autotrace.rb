@@ -11,17 +11,13 @@ class Autotrace < Formula
 
   depends_on 'imagemagick' unless without_imagemagick?
 
-  def options
-    [['--without-imagemagick', 'Compile without ImageMagick (non-bloaty)']]
-  end
+  option 'without-imagemagick', 'Compile without ImageMagick (non-bloaty)'
 
   def install
-    args = [  "--disable-debug",
-              "--disable-dependency-tracking",
-              "--prefix=#{prefix}",
-              "--mandir=#{man}" ]
-
-    args <<  "--without-magick" if without_imagemagick?
+    args = ["--disable-debug", "--disable-dependency-tracking",
+            "--prefix=#{prefix}",
+            "--mandir=#{man}"]
+    args << "--without-magick" if without_imagemagick?
 
     system "./configure", *args
     system "make install"

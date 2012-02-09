@@ -13,16 +13,12 @@ class Libnids < Formula
   homepage 'http://libnids.sourceforge.net/'
   md5 '72d37c79c85615ffe158aa524d649610'
 
+  depends_on 'pkg-config' => :build
   depends_on 'libnet' if use_libnet?
   depends_on 'glib' if use_glib?
-  depends_on 'pkg-config' => :build
 
-  def options
-    [
-      ["--disable-libnet", "Don't include code requiring libnet"],
-      ["--disable-libglib", "Don't use glib2 for multiprocessing support"]
-    ]
-  end
+  option "disable-libnet", "Don't include code requiring libnet."
+  option "disable-libglib", "Don't use glib2 for multiprocessing support."
 
   def install
     args = ["--prefix=#{prefix}", "--mandir=#{man}"]

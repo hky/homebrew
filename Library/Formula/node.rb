@@ -20,9 +20,7 @@ class Node < Formula
   # Stripping breaks dynamic loading
   skip_clean :all
 
-  def options
-    [["--debug", "Build with debugger hooks."]]
-  end
+  option "debug", "Build with debugger hooks."
 
   def install
     unless ARGV.build_devel?

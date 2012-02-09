@@ -22,18 +22,13 @@ class Python3 < Formula
   md5 '9d763097a13a59ff53428c9e4d098a05'
 
   depends_on 'pkg-config' => :build
-
   depends_on 'readline' => :optional  # Prefer over OS X's libedit
   depends_on 'sqlite'   => :optional  # Prefer over OS X's older version
   depends_on 'gdbm'     => :optional
 
-  def options
-    [
-      ["--framework", "Do a 'Framework' build instead of a UNIX-style build."],
-      ["--universal", "Build for both 32 & 64 bit Intel."],
-      ["--static", "Build static libraries."]
-    ]
-  end
+  option "universal"
+  option "framework", "Do a framework build instead of a UNIX-style build."
+  option "static", "Build static libraries."
 
   # Skip binaries so modules will load; skip lib because it is mostly Python files
   skip_clean ['bin', 'lib']
@@ -58,10 +53,7 @@ class Python3 < Formula
 
   def install
     args = ["--prefix=#{prefix}"]
-
-    if ARGV.build_universal?
-      args << "--enable-universalsdk=/" << "--with-universal-archs=intel"
-    end
+    args << "--enable-universalsdk=/" << "--with-universal-archs=intel" if build.universal?
 
     if build_framework?
       args << "--enable-framework=#{prefix}/Frameworks"

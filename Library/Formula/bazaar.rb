@@ -5,9 +5,7 @@ class Bazaar < Formula
   url 'http://launchpad.net/bzr/2.4/2.4.2/+download/bzr-2.4.2.tar.gz'
   md5 'cfc06fddd348445c65a247c0b33a05db'
 
-  def options
-    [["--system", "Install using the OS X system Python."]]
-  end
+  option  "system", "Install using the OS X system Python."
 
   def install
     ENV.j1 # Builds aren't parallel-safe
@@ -41,7 +39,7 @@ class Bazaar < Formula
 
   def caveats
     <<-EOS.undent
-    We've built a "standalone" version of bazaar and installed its libraries to:
+    We've built a standalone version of bazaar and installed its libraries to:
       #{libexec}
 
     We've specifically kept it out of your Python's "site-packages" folder.

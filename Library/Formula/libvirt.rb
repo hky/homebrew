@@ -23,9 +23,7 @@ class Libvirt < Formula
 
   fails_with_llvm "Undefined symbols when linking", :build => "2326"
 
-  def options
-    [['--without-libvirtd', 'Build only the virsh client and development libraries.']]
-  end
+  option 'without-libvirtd', 'Build only the virsh client and development libraries.'
 
   def install
     args = ["--prefix=#{prefix}",

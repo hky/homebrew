@@ -7,12 +7,8 @@ class Audiofile < Formula
 
   depends_on 'lcov' if ARGV.include? '--with-lcov'
 
-  def options
-    [
-      ['--with-lcov', 'Enable Code Coverage support using lcov.'],
-      ['--with-check', 'Run the test suite during install ~30sec']
-    ]
-  end
+  option 'with-lcov', 'Enable Code Coverage support using lcov.'
+  option 'with-check', 'Run the test suite during install ~30sec.'
 
   def install
     args = ["--prefix=#{prefix}", "--disable-dependency-tracking"]

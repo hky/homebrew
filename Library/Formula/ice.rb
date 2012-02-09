@@ -13,12 +13,8 @@ class Ice < Formula
     "http://gist.github.com/raw/459204/44183ae997afb8ec19148fec498a11d67b5ae8bf/Ice-3.4.1-db5.patch"
   end
 
-  def options
-    [
-      ['--doc', 'Install documentation'],
-      ['--demo', 'Build demos']
-    ]
-  end
+  option 'doc', 'Build and install documentation.'
+  option 'demo', 'Build and install demos.'
 
   def install
     ENV.O2

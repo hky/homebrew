@@ -5,12 +5,10 @@ class Libmpdclient < Formula
   homepage 'http://mpd.wikia.com/wiki/ClientLib:libmpdclient'
   sha1 'a8ec78f6a7ae051fbf1cc0f47564301423c281b0'
 
-  def options
-    [[ '--universal', 'Build a universal library.' ]]
-  end
+  option "universal"
 
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end

@@ -7,12 +7,10 @@ class Pixman < Formula
 
   depends_on 'pkg-config' => :build
 
-  def options
-    [["--universal", "Build a universal binary."]]
-  end
+  option "universal"
 
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
     if ENV.compiler == :llvm
       if MacOS.xcode_version >= "4.1"
         ENV.clang

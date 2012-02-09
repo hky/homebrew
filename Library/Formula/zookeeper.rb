@@ -7,12 +7,8 @@ class Zookeeper < Formula
 
   head 'http://svn.apache.org/repos/asf/zookeeper/trunk'
 
-  def options
-    [
-      ["--perl", "Build Perl bindings."],
-      ["--python", "Build Python bindings."],
-    ]
-  end
+  option "perl", "Build Perl bindings."
+  option "python", "Build Python bindings."
 
   def shim_script target
     <<-EOS.undent
@@ -32,7 +28,6 @@ class Zookeeper < Formula
   def default_log4j_properties
     <<-EOS.undent
       log4j.rootCategory=WARN, zklog
-
       log4j.appender.zklog = org.apache.log4j.FileAppender
       log4j.appender.zklog.File = #{var}/log/zookeeper/zookeeper.log
       log4j.appender.zklog.Append = true

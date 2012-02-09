@@ -6,9 +6,7 @@ class GnuUnits < Formula
   homepage 'http://www.gnu.org/software/units/'
   md5 '9b2ee6e7e0e9c62741944cf33fc8a656'
 
-  def options
-    [['--default-names', "Do NOT prepend 'g' to the binary; will override system utils."]]
-  end
+  option 'default-names', "Do NOT prepend 'g' to the binary. Overrides system utils."
 
   def install
     args = ["--prefix=#{prefix}"]

@@ -7,9 +7,7 @@ class Dos2unix < Formula
 
   depends_on "gettext" if ARGV.include? "--enable-nls"
 
-  def options
-    [["--enable-nls", "Enable NLS support."]]
-  end
+  option "enable-nls", "Enable NLS support."
 
   def install
     args = ["prefix=#{prefix}"]

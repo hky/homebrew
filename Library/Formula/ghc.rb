@@ -26,9 +26,7 @@ class Ghc < Formula
   # See: http://hackage.haskell.org/trac/ghc/ticket/2458
   skip_clean ['bin', 'lib']
 
-  def options
-    [['--64bit', 'Install 64-bit version of GHC (experimental).']]
-  end
+  option '64bit', 'Install 64-bit version of GHC (experimental).'
 
   def install
     if ARGV.build_devel?

@@ -5,12 +5,10 @@ class Nasm < Formula
   homepage 'http://www.nasm.us/'
   sha1 'ca57a7454b29e18c64018e49cdf5c832937497ab'
 
-  def options
-    [[ '--universal', 'Build a universal binary' ]]
-  end
+  option "universal"
 
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
     system "./configure", "--prefix=#{prefix}"
     system "make everything"
     system "make install_everything"

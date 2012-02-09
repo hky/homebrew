@@ -8,35 +8,28 @@ class Mapserver < Formula
   depends_on 'gd'
   depends_on 'proj'
   depends_on 'gdal'
-
   depends_on 'geos' if ARGV.include? '--with-geos'
   depends_on 'postgresql' if ARGV.include? '--with-postgresql' and not MacOS.lion?
 
-  def options
-    [
-      ["--with-geos", "Build support for GEOS spatial operations"],
-      ["--with-php", "Build PHP MapScript module"],
-      ["--with-postgresql", "Build support for PostgreSQL as a data source"]
-    ]
-  end
+  option "with-geos", "Build support for GEOS spatial operations."
+  option "with-php", "Build PHP MapScript module."
+  option "with-postgresql", "Build support for PostgreSQL as a data source."
 
   def configure_args
-    args = [
-      "--prefix=#{prefix}",
-      "--with-proj",
-      "--with-gdal",
-      "--with-ogr",
-      "--with-png=/usr/X11"
-    ]
+    args = ["--prefix=#{prefix}",
+            "--with-proj",
+            "--with-gdal",
+            "--with-ogr",
+            "--with-png=/usr/X11"]
 
-    args.push "--with-geos" if ARGV.include? '--with-geos'
-    args.push "--with-php=/usr/include/php" if ARGV.include? '--with-php'
+    args << "--with-geos" if ARGV.include? '--with-geos'
+    args << "--with-php=/usr/include/php" if ARGV.include? '--with-php'
 
     if ARGV.include? '--with-postgresql'
       if MacOS.lion? # Lion ships with PostgreSQL libs
-        args.push "--with-postgis"
+        args << "--with-postgis"
       else
-        args.push "--with-postgis=#{HOMEBREW_PREFIX}/bin/pg_config"
+        args << "--with-postgis=#{HOMEBREW_PREFIX}/bin/pg_config"
       end
     end
 

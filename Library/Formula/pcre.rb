@@ -8,12 +8,10 @@ class Pcre < Formula
 
   fails_with_llvm "Bus error in ld on SL 10.6.4", :build => 2326
 
-  def options
-    [["--universal", "Build a universal binary."]]
-  end
+  option "universal"
 
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

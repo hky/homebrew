@@ -9,11 +9,10 @@ class Netcdf < Formula
   homepage 'http://www.unidata.ucar.edu/software/netcdf/'
   md5 'ead16cb3b671f767396387dcb3c1a814'
 
+  depends_on 'szip'
   depends_on 'hdf5'
 
-  def options
-    [['--enable-fortran', 'Compile Fortran bindings']]
-  end
+  option 'enable-fortran', 'Compile Fortran bindings.'
 
   def install
     ENV.fortran if fortran?

@@ -20,15 +20,7 @@ class Scala < Formula
   version '2.9.1'
   md5 '1a06eacc7f59f279bf1700c98d5bf19d'
 
-  def options
-    [['--with-docs', 'Also install library documentation']]
-  end
-
-  def caveats; <<-EOS.undent
-    Bash completion has been installed to:
-      #{etc}/bash_completion.d
-    EOS
-  end
+  option 'with-docs', 'Also install library documentation.'
 
   def install
     rm_f Dir["bin/*.bat"]
@@ -41,5 +33,11 @@ class Scala < Formula
     if ARGV.include? '--with-docs'
       ScalaDocs.new.brew { doc.install Dir['*'] }
     end
+  end
+
+  def caveats; <<-EOS.undent
+    Bash completion has been installed to:
+      #{etc}/bash_completion.d
+    EOS
   end
 end

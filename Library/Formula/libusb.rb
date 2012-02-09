@@ -6,13 +6,11 @@ class Libusb < Formula
   md5 '37d34e6eaa69a4b645a19ff4ca63ceef'
   head 'git://git.libusb.org/libusb.git'
 
-  def options
-    [["--universal", "Build a universal binary."]]
-  end
+  option "universal"
 
   def install
-    ENV.universal_binary if ARGV.build_universal?
-    system "./autogen.sh" if ARGV.build_head?
+    ENV.universal_binary if build.universal?
+    system "./autogen.sh" if build.head?
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end

@@ -10,19 +10,15 @@ class Wireshark < Formula
     md5 'c9f646a15fed6e31c4aa88322b8cce2a'
   end
 
+  option "with-x", "Include X11 support."
+  option 'with-python', 'Enable experimental python bindings.'
+
   depends_on 'pkg-config' => :build
   depends_on 'gnutls' => :optional
   depends_on 'c-ares' => :optional
   depends_on 'pcre' => :optional
   depends_on 'glib'
   depends_on 'gtk+' if ARGV.include? '--with-x'
-
-  def options
-    [
-      ['--with-x', 'Include X11 support'],
-      ['--with-python', 'Enable experimental python bindings']
-    ]
-  end
 
   def install
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
@@ -42,20 +38,20 @@ class Wireshark < Formula
   end
 
   def caveats; <<-EOS.undent
-      If your list of available capture interfaces is empty
-      (default OS X behavior), try the following commands:
+    If your list of available capture interfaces is empty
+    (default OS X behavior), try the following commands:
 
-        wget https://bugs.wireshark.org/bugzilla/attachment.cgi?id=3373 -O ChmodBPF.tar.gz
-        tar zxvf ChmodBPF.tar.gz
-        open ChmodBPF/Install\\ ChmodBPF.app
+      wget https://bugs.wireshark.org/bugzilla/attachment.cgi?id=3373 -O ChmodBPF.tar.gz
+      tar zxvf ChmodBPF.tar.gz
+      open ChmodBPF/Install\\ ChmodBPF.app
 
-      This adds a launch daemon that changes the permissions of your BPF
-      devices so that all users in the 'admin' group - all users with
-      'Allow user to administer this computer' turned on - have both read
-      and write access to those devices.
+    This adds a launch daemon that changes the permissions of your BPF
+    devices so that all users in the 'admin' group - all users with
+    'Allow user to administer this computer' turned on - have both read
+    and write access to those devices.
 
-      See bug report:
-        https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=3760
+    See bug report:
+      https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=3760
     EOS
   end
 end

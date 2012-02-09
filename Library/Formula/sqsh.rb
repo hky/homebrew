@@ -8,18 +8,17 @@ class Sqsh < Formula
   depends_on 'freetds'
   depends_on 'readline'
 
-  def options
-    [["--with-x", "Enable X windows support."]]
-  end
+  option "with-x", "Enable X windows support."
 
   def install
+    ENV['LIBDIRS'] = Readline.new('readline').lib
+    ENV['INCDIRS'] = Readline.new('readline').include
+    ENV['SYBASE'] = Freetds.new("freetds").prefix
+
     args = ["--disable-debug", "--disable-dependency-tracking",
             "--prefix=#{prefix}",
             "--mandir=#{man}",
             "--with-readline"]
-
-    ENV['LIBDIRS'] = Readline.new('readline').lib
-    ENV['INCDIRS'] = Readline.new('readline').include
 
     if ARGV.include? "--with-x"
       args << "--with-x"
@@ -27,7 +26,6 @@ class Sqsh < Formula
       args << "--x-includes=/usr/X11/includes"
     end
 
-    ENV['SYBASE'] = Freetds.new("freetds").prefix
     system "./configure", *args
     system "make", "install"
     system "make", "install.man"

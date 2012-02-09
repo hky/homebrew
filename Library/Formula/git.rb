@@ -17,12 +17,8 @@ class Git < Formula
 
   depends_on 'pcre' if ARGV.include? '--with-pcre'
 
-  def options
-    [
-      ['--with-blk-sha1', 'compile with the optimized SHA1 implementation'],
-      ['--with-pcre', 'compile with the PCRE library'],
-    ]
-  end
+  option 'with-blk-sha1', 'Compile with the optimized SHA1 implementation.'
+  option 'with-pcre', 'Compile with the PCRE library.'
 
   def install
     # If these things are installed, tell Git build system to not use them

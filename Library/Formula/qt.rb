@@ -13,24 +13,18 @@ class Qt < Formula
 
   head 'git://gitorious.org/qt/qt.git', :branch => 'master'
 
-  def options
-    [
-      ['--with-qtdbus', "Enable QtDBus module."],
-      ['--with-qt3support', "Enable deprecated Qt3Support module."],
-      ['--with-demos-examples', "Enable Qt demos and examples."],
-      ['--with-debug-and-release', "Compile Qt in debug and release mode."],
-      ['--universal', "Build both x86_64 and x86 architectures."],
-    ]
-  end
-
   depends_on "d-bus" if ARGV.include? '--with-qtdbus'
   depends_on 'sqlite' if MacOS.leopard?
 
+  option "universal"
+  option 'with-qtdbus', "Enable QtDBus module."
+  option 'with-qt3support', "Enable deprecated Qt3Support module."
+  option 'with-demos-examples', "Enable Qt demos and examples."
+  option 'with-debug-and-release', "Compile Qt in debug and release mode."
+
   def patches
-    [
-      # Fix compilation with llvm-gcc. Remove for 4.8.1.
-      "https://qt.gitorious.org/qt/qt/commit/448ab7cd150ab7bb7d12bcac76bc2ce1c72298bd?format=patch"
-    ]
+    # Fix compilation with llvm-gcc. Remove for 4.8.1.
+    "https://qt.gitorious.org/qt/qt/commit/448ab7cd150ab7bb7d12bcac76bc2ce1c72298bd?format=patch"
   end
 
   def install
@@ -64,11 +58,11 @@ class Qt < Formula
       args << "-nomake" << "demos" << "-nomake" << "examples"
     end
 
-    if MacOS.prefer_64_bit? or ARGV.build_universal?
+    if MacOS.prefer_64_bit? or build.universal?
       args << '-arch' << 'x86_64'
     end
 
-    if !MacOS.prefer_64_bit? or ARGV.build_universal?
+    if !MacOS.prefer_64_bit? or build.universal?
       args << '-arch' << 'x86'
     end
 

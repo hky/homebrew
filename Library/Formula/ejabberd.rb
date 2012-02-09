@@ -8,12 +8,8 @@ class Ejabberd < Formula
   depends_on "openssl" if MacOS.leopard?
   depends_on "erlang"
 
-  def options
-    [
-      ['--odbc', "Build with ODBC support."],
-      ['--32-bit', "Build 32-bit only."]
-    ]
-  end
+  option 'odbc', "Build with ODBC support."
+  option '32-bit', "Build 32-bit only."
 
   def install
     ENV['TARGET_DIR'] = ENV['DESTDIR'] = "#{lib}/ejabberd/erlang/lib/ejabberd-#{version}"

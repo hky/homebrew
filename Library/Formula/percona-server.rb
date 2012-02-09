@@ -16,15 +16,11 @@ class PerconaServer < Formula
 
   skip_clean :all # So "INSTALL PLUGIN" can work.
 
-  def options
-    [
-      ['--with-tests', "Build with unit tests."],
-      ['--with-embedded', "Build the embedded server."],
-      ['--with-libedit', "Compile with EditLine wrapper instead of readline"],
-      ['--universal', "Make mysql a universal binary"],
-      ['--enable-local-infile', "Build with local infile loading support"]
-    ]
-  end
+  option "universal"
+  option 'with-tests', "Build with unit tests."
+  option 'with-embedded', "Build the embedded server."
+  option 'with-libedit', "Compile with EditLine wrapper instead of readline."
+  option 'enable-local-infile', "Build with local infile loading support."
 
   # The CMAKE patches are so that on Lion we do not detect a private
   # pthread_init function as linkable. Patch sourced from the MySQL formula.
@@ -37,7 +33,6 @@ class PerconaServer < Formula
     (var+"percona").mkpath
 
     args = std_cmake_parameters.split + [
-      ".",
       "-DMYSQL_DATADIR=#{var}/percona",
       "-DINSTALL_MANDIR=#{man}",
       "-DINSTALL_DOCDIR=#{doc}",
@@ -64,12 +59,12 @@ class PerconaServer < Formula
     args << "-DWITH_READLINE=yes" unless ARGV.include? '--with-libedit'
 
     # Make universal for binding to universal applications
-    args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if ARGV.build_universal?
+    args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if build.universal?
 
     # Build with local infile loading support
     args << "-DENABLED_LOCAL_INFILE=1" if ARGV.include? '--enable-local-infile'
 
-    system "cmake", *args
+    system "cmake", ".", *args
     system "make"
     system "make install"
 

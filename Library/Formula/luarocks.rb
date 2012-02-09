@@ -15,9 +15,7 @@ class Luarocks < Formula
     DATA if HOMEBREW_PREFIX.to_s == '/usr/local'
   end
 
-  def options
-    [['--with-luajit', 'Use LuaJIT instead of the stock Lua.']]
-  end
+  option 'with-luajit', 'Use LuaJIT instead of the stock Lua.'
 
   def install
     # Install to the Cellar, but direct modules to HOMEBREW_PREFIX

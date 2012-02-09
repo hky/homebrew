@@ -7,16 +7,12 @@ class Macvim < Formula
   md5 '5bdc0bc618b3179130f846f8d0f81283'
   head 'https://github.com/b4winckler/macvim.git', :branch => 'master'
 
-  def options
-  [
-    # Building custom icons fails for many users, so off by default.
-    ["--custom-icons", "Try to generate custom document icons."],
-    ["--with-cscope", "Build with Cscope support."],
-    ["--with-envycoder", "Build with Envy Code R Bold font."],
-    ["--override-system-vim", "Override system vim."],
-    ["--enable-clipboard", "Enable System clipboard handling in the terminal."]
-  ]
-  end
+  # Building custom icons fails for many users, so off by default.
+  option "custom-icons", "Try to generate custom document icons."
+  option "with-cscope", "Build with Cscope support."
+  option "with-envycoder", "Build with Envy Code R Bold font."
+  option "override-system-vim", "Override system vim."
+  option "enable-clipboard", "Enable System clipboard handling in the terminal."
 
   depends_on 'cscope' if ARGV.include? '--with-cscope'
 

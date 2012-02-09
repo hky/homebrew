@@ -10,14 +10,10 @@ class Postgresql < Formula
   depends_on 'libxml2' if MacOS.leopard? # Leopard libxml is too old
   depends_on 'ossp-uuid'
 
-  def options
-    [
-      ['--32-bit', 'Build 32-bit only.'],
-      ['--no-python', 'Build without Python support.'],
-      ['--no-perl', 'Build without Perl support.'],
-      ['--enable-dtrace', 'Build with DTrace support.']
-    ]
-  end
+  option '32-bit'
+  option 'no-python', 'Build without Python support.'
+  option 'no-perl', 'Build without Perl support.'
+  option 'enable-dtrace', 'Build with DTrace support.'
 
   skip_clean :all
 

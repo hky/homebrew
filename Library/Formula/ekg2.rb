@@ -14,9 +14,7 @@ class Ekg2 < Formula
   # stripping breaks loading shared objects
   skip_clean :all
 
-  def options
-    [["--with-libgadu", "Compiles ekg2 with gadu-gadu support"]]
-  end
+  option "with-libgadu", "Compiles with gadu-gadu support."
 
   def install
     readline = Formula.factory 'readline'

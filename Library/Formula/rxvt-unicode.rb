@@ -9,15 +9,13 @@ class RxvtUnicode < Formula
 
   fails_with_llvm "memory fences not defined for your architecture", :build => 2336
 
+  option "disable-iso14755", "Disable ISO 14775 Shift+Ctrl hotkey."
+
   def patches
     # Patch hunks 1 and 2 allow perl support to compile on Intel.
     # Hunk 3 is taken from http://aur.archlinux.org/packages.php?ID=44649
     # which removes an extra 10% font width that urxvt adds.
     DATA
-  end
-
-  def options
-    [["--disable-iso14755", "Disable ISO 14775 Shift+Ctrl hotkey"]]
   end
 
   def install

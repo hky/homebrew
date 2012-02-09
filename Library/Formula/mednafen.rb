@@ -18,11 +18,7 @@ class Mednafen < Formula
   depends_on 'libcdio'
   depends_on 'libsndfile'
 
-  def options
-    [
-      ["--with-psx", "Build experimental PlayStation emulator"]
-    ]
-  end
+  option "with-psx", "Build experimental PlayStation emulator."
 
   def install
     # Compiler produces code which fails math tests

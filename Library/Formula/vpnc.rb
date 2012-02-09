@@ -10,9 +10,7 @@ class Vpnc < Formula
 
   fails_with_llvm :build => 2334
 
-  def options
-    [["--hybrid", "Use vpnc hybrid authentication."]]
-  end
+  option "hybrid", "Use vpnc hybrid authentication."
 
   # Patch from user @Imagesafari to enable compilation on Lion
   def patches

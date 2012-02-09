@@ -9,6 +9,11 @@ class Mariadb < Formula
 
   depends_on 'readline'
 
+  option "universal"
+  option 'with-tests', "Keep tests when installing."
+  option 'with-bench', "Keep benchmark app when installing."
+  option 'client-only', "Only install client tools, not the server."
+
   def patches
     # upstream patches to fix compilation failures on OS X
     # will be present in next release
@@ -17,22 +22,12 @@ class Mariadb < Formula
               'http://bazaar.launchpad.net/~maria-captains/maria/5.2/diff/3094'] }
   end
 
-  def options
-    [
-      ['--with-tests', "Keep tests when installing."],
-      ['--with-bench', "Keep benchmark app when installing."],
-      ['--client-only', "Only install client tools, not the server."],
-      ['--universal', "Make mariadb a universal binary"]
-    ]
-  end
-
   def install
     ENV.append 'CXXFLAGS', '-fno-omit-frame-pointer -felide-constructors'
 
-    # Make universal for bindings to universal applications
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
 
-    configure_args = [
+    args = [
       "--without-docs",
       "--without-debug",
       "--disable-dependency-tracking",
@@ -54,9 +49,9 @@ class Mariadb < Formula
       "--with-libevent",
     ]
 
-    configure_args << "--without-server" if ARGV.include? '--client-only'
+    args << "--without-server" if ARGV.include? '--client-only'
 
-    system "./configure", *configure_args
+    system "./configure", *args
     system "make install"
 
     bin.install_symlink "#{libexec}/mysqld"

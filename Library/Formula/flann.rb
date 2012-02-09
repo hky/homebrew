@@ -5,13 +5,9 @@ class Flann < Formula
   url 'http://people.cs.ubc.ca/~mariusm/uploads/FLANN/flann-1.7.1-src.zip'
   md5 'd780795f523eabda7c7ea09c6f5cf235'
 
-  def options
-    [
-      ['--enable-python', 'Enable python bindings.'],
-      ['--enable-matlab', 'Enable matlab/octave bindings.'],
-      ['--with-examples', 'Build and install example binaries']
-    ]
-  end
+  option 'enable-python', 'Enable python bindings.'
+  option 'enable-matlab', 'Enable matlab/octave bindings.'
+  option 'with-examples', 'Build and install example binaries.'
 
   depends_on 'cmake' => :build
   depends_on 'gtest' => :build

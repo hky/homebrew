@@ -5,11 +5,7 @@ class Jbigkit < Formula
   homepage 'http://www.cl.cam.ac.uk/~mgk25/jbigkit/'
   md5 '3dd87f605abb1a97a22dc79d8b3e8f6c'
 
-  def options
-    [
-      ['--with-check', "Verify the library during install. Takes ~10s."]
-    ]
-  end
+  option 'with-check', "Verify the library during install. Takes ~10s."
 
   def install
     # Set for a universal build and patch the Makefile.

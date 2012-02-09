@@ -7,12 +7,8 @@ class Gromacs < Formula
 
   depends_on 'fftw'
 
-  def options
-    [
-      ['--enable-mpi', "Enables MPI support"],
-      ['--enable-double',"Enables double precision"]
-    ]
-  end
+  option 'enable-mpi', "Enables MPI support."
+  option 'enable-double',"Enables double precision."
 
   def install
     args = ["--prefix=#{prefix}"]

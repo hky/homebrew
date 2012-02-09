@@ -5,9 +5,7 @@ class Ecasound < Formula
   homepage 'http://www.eca.cx/ecasound/'
   md5 'd9ded0074a8eeb59dd507c248220d010'
 
-  def options
-    [["--with-ruby", "Compile with ruby support."]]
-  end
+  option "with-ruby", "Compile with ruby support."
 
   def install
     args = ["--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"]

@@ -9,18 +9,15 @@ class Portaudio < Formula
 
   fails_with_llvm :build => 2334
 
-  def options
-    [["--universal", "Build a universal binary."]]
-  end
+  option "universal"
 
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
 
-    args = [ "--prefix=#{prefix}",
-             "--disable-debug",
-             "--disable-dependency-tracking",
-             # portaudio builds universal unless told not to
-             "--enable-mac-universal=#{ARGV.build_universal? ? 'yes' : 'no'}" ]
+    args = ["--disable-debug", "--disable-dependency-tracking",
+            "--prefix=#{prefix}",
+            # portaudio builds universal unless told not to
+            "--enable-mac-universal=#{build.universal? ? 'yes' : 'no'}"]
 
     system "./configure", *args
     system "make install"

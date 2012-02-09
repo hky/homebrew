@@ -5,8 +5,8 @@ def build_gui?
 end
 
 class Postgis < Formula
-  url 'http://postgis.refractions.net/download/postgis-1.5.3.tar.gz'
   homepage 'http://postgis.refractions.net/'
+  url 'http://postgis.refractions.net/download/postgis-1.5.3.tar.gz'
   md5 '05a61df5e1b78bf51c9ce98bea5526fc'
 
   head 'http://svn.osgeo.org/postgis/trunk/', :using => :svn
@@ -17,22 +17,17 @@ class Postgis < Formula
     version '2.0.0alpha5'
   end
 
+  option 'with-gui', 'Build shp2pgsql-gui in addition to command line tools.'
+
   depends_on 'postgresql'
   depends_on 'proj'
   depends_on 'geos'
-
   depends_on 'gtk+' if build_gui?
 
   # For GeoJSON and raster handling
   if ARGV.build_head? or ARGV.build_devel?
     depends_on 'gdal'
     depends_on 'json-c'
-  end
-
-  def options
-    [
-      ['--with-gui', 'Build shp2pgsql-gui in addition to command line tools']
-    ]
   end
 
   # PostGIS command line tools intentionally have unused symbols in

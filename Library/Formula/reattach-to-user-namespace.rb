@@ -6,12 +6,8 @@ class ReattachToUserNamespace < Formula
   url 'https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard.git', :tag => 'dadea0aa48259c704d0b412b9588de2f5623e323'
   version 'dadea0'
 
-  def options
-    [
-      ['--wrap-pbcopy-and-pbpaste', 'Include wrappers for pbcopy/pbpaste that shim in this fix'],
-      ['--wrap-launchctl', 'Include wrapper for launchctl with this fix']
-    ]
-  end
+  option 'wrap-launchctl', 'Include wrapper for launchctl.'
+  option 'wrap-pbcopy-and-pbpaste', 'Include wrappers for pbcopy/pbpaste.'
 
   def install
     system "make"

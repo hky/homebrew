@@ -54,13 +54,9 @@ class Octave < Formula
   # required for plotting if we don't have native graphics
   depends_on 'gnuplot' if no_native?
 
-  def options
-    [
-      ['--without-graphicsmagick', 'Compile without GraphicsMagick'],
-      ['--without-fltk', 'Compile without fltk (disables native graphics)'],
-      ['--test', 'Run tests before installing'],
-    ]
-  end
+  option 'without-graphicsmagick', 'Compile without GraphicsMagick.'
+  option 'without-fltk', 'Compile without fltk (disables native graphics).'
+  option 'test', 'Run tests before installing.'
 
   def patches
     # Upstream patch that fixes a bug that causes the build to fail when BSD

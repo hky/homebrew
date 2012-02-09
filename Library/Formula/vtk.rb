@@ -5,17 +5,13 @@ class Vtk < Formula
   url 'http://www.vtk.org/files/release/5.8/vtk-5.8.0.tar.gz'
   md5 '37b7297d02d647cc6ca95b38174cb41f'
 
+  option 'python', "Enable python wrapping."
+  option 'qt', "Enable Qt extension."
+  option 'qt-extern', "Enable Qt extension, via external Qt."
+  option 'tcl', "Enable Tcl wrapping."
+
   depends_on 'cmake' => :build
   depends_on 'qt' if ARGV.include? '--qt'
-
-  def options
-  [
-    ['--python', "Enable python wrapping."],
-    ['--qt', "Enable Qt extension."],
-    ['--qt-extern', "Enable Qt extension (via external Qt)"],
-    ['--tcl', "Enable Tcl wrapping."],
-  ]
-  end
 
   def install
     args = std_cmake_parameters.split + [

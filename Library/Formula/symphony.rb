@@ -5,12 +5,8 @@ class Symphony < Formula
   url 'http://www.coin-or.org/download/source/SYMPHONY/SYMPHONY-5.3.3.tgz'
   md5 '8c34f9fa49ebff325b984408ff1f92fc'
 
-  def options
-    [
-     ["--enable-openmp", "Enable openmp support"],
-     ["--with-gmpl", "Add in GNU Modeling Lang. support via GLPK"]
-    ]
-  end
+  option "enable-openmp", "Enable openmp support."
+  option "with-gmpl", "Add in GNU Modeling Lang. support via GLPK."
 
   def install
     args = ["--disable-debug", "--disable-dependency-tracking",

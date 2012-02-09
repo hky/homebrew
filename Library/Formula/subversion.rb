@@ -1,9 +1,9 @@
 require 'formula'
 
-def build_java?;      ARGV.include? "--java";   end
-def build_perl?;      ARGV.include? "--perl";   end
-def build_python?;    ARGV.include? "--python"; end
-def build_ruby?;      ARGV.include? "--ruby";   end
+def build_java?;   ARGV.include? "--java";   end
+def build_perl?;   ARGV.include? "--perl";   end
+def build_python?; ARGV.include? "--python"; end
+def build_ruby?;   ARGV.include? "--ruby";   end
 
 class Subversion < Formula
   homepage 'http://subversion.apache.org/'
@@ -18,15 +18,11 @@ class Subversion < Formula
   depends_on 'neon'
   depends_on 'sqlite'
 
-  def options
-    [
-      ['--java', 'Build Java bindings.'],
-      ['--perl', 'Build Perl bindings.'],
-      ['--python', 'Build Python bindings.'],
-      ['--ruby', 'Build Ruby bindings.'],
-      ['--universal', 'Build as a Universal Intel binary.'],
-    ]
-  end
+  option "universal"
+  option 'java', 'Build Java bindings.'
+  option 'perl', 'Build Perl bindings.'
+  option 'python', 'Build Python bindings.'
+  option 'ruby', 'Build Ruby bindings.'
 
   def check_neon_arch
     # Check that Neon was built universal if we are building w/ --universal
@@ -42,7 +38,7 @@ class Subversion < Formula
 
   def install
     if build_java?
-      unless ARGV.build_universal?
+      unless build.universal?
         opoo "A non-Universal Java build was requested."
         puts "To use Java bindings with various Java IDEs, you might need a universal build:"
         puts "  brew install subversion --universal --java"
@@ -53,7 +49,7 @@ class Subversion < Formula
       end
     end
 
-    if ARGV.build_universal?
+    if build.universal?
       ENV.universal_binary
       check_neon_arch
     end
@@ -87,7 +83,7 @@ class Subversion < Formula
     if build_perl?
       ENV.j1 # This build isn't parallel safe
       # Remove hard-coded ppc target, add appropriate ones
-      if ARGV.build_universal?
+      if build.universal?
         arches = "-arch x86_64 -arch i386"
       elsif MacOS.leopard?
         arches = "-arch i386"

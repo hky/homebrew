@@ -7,9 +7,7 @@ class Avrdude < Formula
 
   depends_on 'libusb-compat' if ARGV.include? '--with-usb'
 
-  def options
-    [['--with-usb', 'Compile AVRDUDE with USB support.']]
-  end
+  option 'with-usb', 'Compile AVRDUDE with USB support.'
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
