@@ -59,6 +59,10 @@ class BuildOptions
     ARGV.include? '--devel'
   end
 
+  def stable?
+    not (head? or devel?)
+  end
+
   # True if the user requested a universal build.
   def universal?
     ARGV.include? '--universal'
