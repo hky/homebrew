@@ -41,7 +41,7 @@ class Formula
     end
 
     raise "No url provided for formula #{name}" if @url.nil?
-    @name=name
+    @name = name
     validate_variable :name
 
     # If we got an explicit path, use that, else determine from the name
@@ -49,11 +49,11 @@ class Formula
 
     set_instance_variable 'version'
     @version ||= @spec_to_use.detect_version
-    validate_variable :version if @version
+    validate_variable :version
 
     CHECKSUM_TYPES.each { |type| set_instance_variable type }
 
-    @downloader=download_strategy.new @spec_to_use.url, name, version, @spec_to_use.specs
+    @downloader = download_strategy.new @spec_to_use.url, name, version, @spec_to_use.specs
   end
 
   # if the dir is there, but it's empty we consider it not installed
@@ -88,8 +88,6 @@ class Formula
   end
 
   def prefix
-    validate_variable :name
-    validate_variable :version
     HOMEBREW_CELLAR+@name+@version
   end
   def rack; prefix.parent end
@@ -178,9 +176,6 @@ class Formula
 
   # yields self with current working directory set to the uncompressed tarball
   def brew
-    validate_variable :name
-    validate_variable :version
-
     fails_with_llvm?.handle_failure if fails_with_llvm?
 
     stage do
