@@ -7,7 +7,7 @@
 ##
 ## The `depends_on` method in the formula DSL is used to declare
 ## dependencies and requirements.
-
+require 'tab'
 
 # This class is used by `depends_on` in the formula DSL to turn dependency
 # specifications into the proper kinds of dependencies and requirements.
@@ -38,8 +38,13 @@ class DependencyCollector
       when *LANGUAGE_MODULES
         @external_deps << LanguageModuleDependency.new(value, key)
       else
-        # :optional, :recommended, :build, :universal and "32bit" are predefined
-        @deps << Dependency.new(key, [value])
+        # Add a formula dependency with the given tags. If these include
+        # options ("--with-python") then also create a build requirement.
+        d = Dependency.new(key, [value])
+        @deps << d
+        unless d.options.empty?
+          @external_deps << BuildOptionRequirement.new(d)
+        end
       end
     else
       raise "Unsupported type #{spec.class} for #{spec}"
@@ -58,12 +63,13 @@ end
 
 # A dependency on another Homebrew formula.
 class Dependency
-  attr_reader :name, :tags
+  attr_reader :name, :tags, :options
 
   def initialize name, tags=nil
     @name = name
     tags = [] if tags == nil
     @tags = tags.each {|s| s.to_s}
+    @options = @tags.select{|p|p=~/^--/}
   end
 
   def to_s
@@ -72,10 +78,6 @@ class Dependency
 
   def ==(other_dep)
     @name == other_dep.to_s
-  end
-
-  def options
-    @tags.select{|p|p.start_with? '--'}
   end
 end
 
@@ -135,5 +137,29 @@ class LanguageModuleDependency < Requirement
       when :rbx     then "rbx gem install"
       when :ruby    then "gem install"
     end
+  end
+end
+
+
+# Require that a formula dependency be installed with
+# the given options.
+class BuildOptionRequirement < Requirement
+  def initialize d
+    @d = d
+  end
+  def statisfied?
+    f = Formula.factory @d.name
+    tab = Tab.for_formula f
+    @d.options.each do |o|
+      return false unless tab.installed_with? o
+    end
+    true
+  end
+  def message; <<-EOS.undent
+    #{@d.name} needs to be installed with #{@d.options}
+    EOS
+  end
+  def fatal?
+    true
   end
 end
