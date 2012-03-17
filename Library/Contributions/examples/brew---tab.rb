@@ -9,7 +9,7 @@ module Homebrew extend self
   def tab
     ARGV.formulae.each do |f|
       next unless f.installed?
-      receipt = Tab.for_formula f
+      receipt = Tab.for_keg f.prefix
       puts receipt.to_json
     end
   end
