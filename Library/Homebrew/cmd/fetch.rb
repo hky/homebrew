@@ -30,24 +30,22 @@ module Homebrew extend self
       the_tarball, _ = f.fetch
       next unless the_tarball.kind_of? Pathname
 
-      bottle = install_bottle? f
-
-      previous_md5 = f.instance_variable_get(:@md5).to_s.downcase unless bottle
-      previous_sha1 = f.instance_variable_get(:@sha1).to_s.downcase
-      previous_sha2 = f.instance_variable_get(:@sha256).to_s.downcase unless bottle
+      previous_md5 = f.active_spec.md5.to_s.downcase
+      previous_sha1 = f.active_spec.sha1.to_s.downcase
+      previous_sha2 = f.active_spec.sha256.to_s.downcase
 
       puts "Downloaded to: #{the_tarball}" unless already_downloaded
-      puts "MD5:  #{the_tarball.md5}" unless bottle
+      puts "MD5:  #{the_tarball.md5}"
       puts "SHA1: #{the_tarball.sha1}"
-      puts "SHA256: #{the_tarball.sha2}" unless bottle
+      puts "SHA256: #{the_tarball.sha2}"
 
-      unless previous_md5.nil? or previous_md5.empty? or the_tarball.md5 == previous_md5 or bottle
+      unless previous_md5.nil? or previous_md5.empty? or the_tarball.md5 == previous_md5
         opoo "Formula reports different MD5: #{previous_md5}"
       end
       unless previous_sha1.nil? or previous_sha1.empty? or the_tarball.sha1 == previous_sha1
         opoo "Formula reports different SHA1: #{previous_sha1}"
       end
-      unless previous_sha2.nil? or previous_sha2.empty? or the_tarball.sha2 == previous_sha2 or bottle
+      unless previous_sha2.nil? or previous_sha2.empty? or the_tarball.sha2 == previous_sha2
         opoo "Formula reports different SHA256: #{previous_sha2}"
       end
     end
