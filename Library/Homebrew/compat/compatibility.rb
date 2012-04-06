@@ -87,6 +87,10 @@ class Formula
     @cc_failures ||= CompilerFailures.new
     @cc_failures << fails_with_llvm_reason
   end
+
+  class << self
+    attr_rw :bottle_sha1
+  end
 end
 
 class UnidentifiedFormula < Formula
