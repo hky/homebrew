@@ -71,13 +71,7 @@ class Patch
     if url.kind_of? File # true when DATA is passed
       write_data url
     elsif looks_like_url(url)
-      @url = url # Save URL to mark this as an external patch
-      case @url
-      when /\.gz$/
-        @compression = :gzip
-      when /\.bz2$/
-        @compression = :bzip2
-      end
+      @url = url
     else
       # it's a file on the local filesystem
       # use URL as the filename for patch
