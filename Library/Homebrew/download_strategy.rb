@@ -70,8 +70,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   end
 
   def stage
-    compression = @tarball_path.compression_type
-    case compression
+    case @tarball_path.compression_type
     when :zip
       quiet_safe_system '/usr/bin/unzip', {:quiet_flag => '-qq'}, @tarball_path
       chdir
