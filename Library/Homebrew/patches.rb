@@ -1,5 +1,3 @@
-require 'downloads'
-
 class Patches
   # The patches defined in a formula and the DATA from that file
   def initialize patches
@@ -119,8 +117,9 @@ private
   def detect_compression!
     # If nil we have not tried to detect yet
     if @compression.nil?
-      if File.exist? @patch_filename
-        @compression = determine_file_compression Pathname.new(@patch_filename)
+      path = Pathname.new(@patch_filename)
+      if path.exist?
+        @compression = path.compression_type
         @compression ||= :none # If nil, convert to :none
       end
     end

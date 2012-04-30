@@ -239,6 +239,37 @@ class Pathname
     nil
   end
 
+  def compression_type
+    # Don't treat jars as compressed
+    return nil if self.extname == '.jar'
+
+    # OS X installer package
+    return :pkg if self.extname == '.pkg'
+
+    # get the first six bytes
+    magic_bytes = nil
+    File.open(self) { |f| magic_bytes = f.read(6) }
+
+    # magic numbers stolen from /usr/share/file/magic/
+    case magic_bytes
+    when /^PK\003\004/   # zip
+      return :zip
+    when /^\037\213/     # gzip
+      return :gzip
+    when /^BZh/          # bz2
+      return :bz2
+    when /^\037\235/     # compress
+      return :compress
+    when /^\xFD7zXZ\x00/ # xz compressed
+      return :xz
+    when /^Rar!/
+      return :rar
+    else
+      # Assume it is not an archive
+      return nil
+    end
+  end
+
   def incremental_hash(hasher)
     incr_hash = hasher.new
     self.open('r') do |f|

@@ -1,5 +1,3 @@
-require 'downloads'
-
 class AbstractDownloadStrategy
   def initialize url, name, version, specs
     @url=url
@@ -72,7 +70,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   end
 
   def stage
-    compression = determine_file_compression @tarball_path
+    compression = @tarball_path.compression_type
     case compression
     when :zip
       quiet_safe_system '/usr/bin/unzip', {:quiet_flag => '-qq'}, @tarball_path
