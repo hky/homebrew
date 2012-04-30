@@ -475,6 +475,7 @@ public
   end
 
   # For FormulaInstaller.
+  # `fn` is a Pathname
   def verify_download_integrity fn, *args
     require 'digest'
     if args.length != 2
