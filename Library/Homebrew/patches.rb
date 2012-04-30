@@ -9,7 +9,9 @@ class Patches
       # DATA.each does each line, which doesn't work so great
       urls = [urls] unless urls.kind_of? Array
       urls.each do |url|
-        @patches << Patch.new(patch_p, '%03d-homebrew.diff' % n, url)
+        patch_class = detect_patch_class(url)
+        patch = patch_class.new(patch_p, '%03d-homebrew.diff' % n, url)
+        @patches << patch
         n += 1
       end
     end
@@ -27,15 +29,29 @@ class Patches
   end
 
   def download!
-    return unless external_patches?
+    # Get external patches.
+    # Downloading all at once is much more efficient, especially for FTP.
+    curl_args = external_curl_args
+    curl(*curl_args) unless curl_args.empty?
 
-    # downloading all at once is much more efficient, especially for FTP
-    curl(*external_curl_args)
-
-    external_patches.each{|p| p.stage!}
+    @patches.each{|p| p.stage!}
   end
 
 private
+
+  def looks_like_url str
+    str =~ %r[^\w+\://]
+  end
+
+  def detect_patch_class(url)
+    if url.kind_of? File
+      DataPatch
+    elsif looks_like_url(url)
+      ExternalPatch
+    else
+      FilePatch
+    end
+  end
 
   def external_patches
      @patches.select{|p| p.external?}
@@ -56,36 +72,77 @@ private
 
 end
 
+# Base class for Patch classes.
+# All patches need a -p argument and a filename
 class Patch
+  def initialize patch_p, filename, external
+    @patch_p = patch_p
+    @patch_filename = filename
+    @external = external
+  end
+
+  def patch_args
+    ["-#{@patch_p}", '-i', @patch_filename]
+  end
+
+  def external?
+    @external
+  end
+
+  # Subclasses can override as needed
+  def stage!; end
+end
+
+# A patch class for handling inline (DATA / __END__) patches
+class DataPatch < Patch
+  def initialize patch_p, filename, data_file
+    super(patch_p, filename, false)
+    @data_file = data_file
+  end
+
+  # Do any supported substitutions of HOMEBREW vars in a DATA patch
+  def brew_var_substitution s
+    s.gsub("HOMEBREW_PREFIX", HOMEBREW_PREFIX)
+  end
+
+  def compression; :none; end
+
+  def stage!
+    pn = Pathname.new(@patch_filename)
+    pn.write(brew_var_substitution(@data_file.read.to_s))
+  end
+end
+
+class FilePatch < Patch
+  def initialize patch_p, ignored, local_path
+    super(patch_p, local_path, false)
+  end
+
+  def compression; :none; end
+end
+
+class ExternalPatch < Patch
   # Used by formula to unpack after downloading
   attr_reader :compression
   attr_reader :compressed_filename
 
   def initialize patch_p, filename, url
-    @patch_p = patch_p
-    @patch_filename = filename
+    super(patch_p, filename, true)
+
     @compressed_filename = nil
     @compression = nil
-    @url = nil
-    @checksum = nil
 
-    if url.kind_of? File # true when DATA is passed
-      write_data url
-    elsif looks_like_url(url)
-      @url = url
-      @url, @checksum = @url.split('#', 2) if @url =~ /#/
+    if url =~ /#/
+      @url, @checksum = url.split('#', 2)
     else
-      # it's a file on the local filesystem
-      # use URL as the filename for patch
-      @patch_filename = url
+      @url = url
+      @checksum = nil
     end
   end
 
   # rename the downloaded file to take compression into account
   # verify the file if a checksum is given
   def stage!
-    return unless external?
-
     # Verify the download; but if no checksum was given
     # skip this step, for compatibility
     type = checksum_type
@@ -114,14 +171,6 @@ EOF
     end
   end
 
-  def external?
-    not @url.nil?
-  end
-
-  def patch_args
-    ["-#{@patch_p}", '-i', @patch_filename]
-  end
-
   def curl_args
     [@url, '-o', @patch_filename]
   end
@@ -142,7 +191,7 @@ private
 
   # Detect compression type from the downloaded patch.
   def detect_compression!
-    # If nil we have not tried to detect yet
+    # If compression is nil we have not tried to detect yet
     if @compression.nil?
       path = Pathname.new(@patch_filename)
       if path.exist?
@@ -152,18 +201,4 @@ private
     end
   end
 
-  # Write the given file object (DATA) out to a local file for patch
-  def write_data f
-    pn = Pathname.new @patch_filename
-    pn.write(brew_var_substitution(f.read.to_s))
-  end
-
-  # Do any supported substitutions of HOMEBREW vars in a DATA patch
-  def brew_var_substitution s
-    s.gsub("HOMEBREW_PREFIX", HOMEBREW_PREFIX)
-  end
-
-  def looks_like_url str
-    str =~ %r[^\w+\://]
-  end
 end
