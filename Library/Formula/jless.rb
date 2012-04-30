@@ -19,13 +19,13 @@ class Jless < Formula
 
     p = [
       # Debian patches
-      'http://ftp.de.debian.org/debian/pool/main/j/jless/jless_382-iso262-2.diff.gz',
+      'http://ftp.de.debian.org/debian/pool/main/j/jless/jless_382-iso262-2.diff.gz#b948df2bd007478555157ef37c728a37',
       *iso_patches
     ]
 
     # See: http://bogytech.blogspot.com/2011/07/kterm-jless-screen.html
     # Must come after the Debian patches
-    p << 'https://docs.google.com/uc?id=0B0E5E7E1sD2nZTI4NmUzZDAtZTY1MC00YmI4LTkyNzQtYmRmYjJkNzJmNzgy'
+    p << 'https://docs.google.com/uc?id=0B0E5E7E1sD2nZTI4NmUzZDAtZTY1MC00YmI4LTkyNzQtYmRmYjJkNzJmNzgy#367889392da9b2ec47b4e4b33a0a4ba9'
     return p
   end
 
