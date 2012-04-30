@@ -1,3 +1,4 @@
+require 'checksums'
 require 'download_strategy'
 require 'dependencies'
 require 'formula_support'
@@ -519,15 +520,17 @@ public
     hasher = Digest.const_get(type)
     hash = fn.incremental_hash(hasher)
 
+    result = Checksum.new(type).validate(fn, supplied)
+
     if supplied and not supplied.empty?
       message = <<-EOS.undent
-        #{type} mismatch
-        Expected: #{supplied}
-        Got: #{hash}
+        #{result.type} mismatch
+        Expected: #{result.expected}
+        Got: #{result.actual}
         Archive: #{fn}
         (To retry an incomplete download, remove the file above.)
         EOS
-      raise message unless supplied.upcase == hash.upcase
+      raise message unless result.success?
     else
       opoo "Cannot verify package integrity"
       puts "The formula did not provide a download checksum"

@@ -1,3 +1,5 @@
+require 'checksums'
+
 class Patches
   # The patches defined in a formula and the DATA from that file
   def initialize patches
@@ -147,18 +149,16 @@ class ExternalPatch < Patch
   def stage!
     # Verify the download; but if no checksum was given
     # skip this step, for compatibility
-    type = checksum_type
-    unless type.nil?
-      type = type.to_s.upcase
-      hasher = Digest.const_get(type)
-      hash = Pathname.new(@patch_filename).incremental_hash(hasher)
+    validator = checksum_type
+    unless validator.nil?
+      result = validator.validate Pathname.new(@patch_filename), @checksum
       message = <<-EOF
-#{type} mismatch
-Expected: #{@checksum}
-Got: #{hash}
+#{result.type} mismatch
+Expected: #{result.expected}
+Got: #{result.actual}
 Patch: #{@url}
 EOF
-      raise message unless @checksum.upcase == hash.upcase
+      raise message unless result.success?
     end
 
     detect_compression!
@@ -184,9 +184,9 @@ private
   def checksum_type
     return nil if @checksum.nil?
     case @checksum.size
-    when 32 then :md5
-    when 40 then :sha1
-    when 64 then :sha256
+    when 32 then Checksum.new(:md5)
+    when 40 then Checksum.new(:sha1)
+    when 64 then Checksum.new(:sha256)
     else raise "Invalid checksum #{@checksum}"
     end
   end
