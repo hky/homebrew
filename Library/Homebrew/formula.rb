@@ -1,4 +1,3 @@
-require 'checksums'
 require 'download_strategy'
 require 'dependencies'
 require 'formula_support'
@@ -478,7 +477,6 @@ public
   # For FormulaInstaller.
   # `fn` is a Pathname
   def verify_download_integrity fn, *args
-    require 'digest'
     if args.length != 2
       type = checksum_type || :md5
       supplied = instance_variable_get("@#{type}")
@@ -486,8 +484,7 @@ public
       supplied, type = args
     end
 
-    result = Checksum.new(type).validate(fn, supplied)
-
+    result = fn.checksum(type, supplied)
     if supplied and not supplied.empty?
       message = <<-EOF
 #{result.type} mismatch
@@ -500,7 +497,7 @@ EOF
     else
       opoo "Cannot verify package integrity"
       puts "The formula did not provide a download checksum"
-      puts "For your reference the #{type} is: #{hash}"
+      puts "For your reference the #{type} is: #{result.actual}"
     end
   end
 
