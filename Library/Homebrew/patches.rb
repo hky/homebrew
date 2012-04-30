@@ -69,11 +69,13 @@ class Patch
     @compressed_filename = nil
     @compression = nil
     @url = nil
+    @checksum = nil
 
     if url.kind_of? File # true when DATA is passed
       write_data url
     elsif looks_like_url(url)
-      @url = url # Save URL to mark this as an external patch
+      @url = url
+      @url, @checksum = @url.split('#', 2) if @url =~ /#/
     else
       # it's a file on the local filesystem
       # use URL as the filename for patch
@@ -82,9 +84,28 @@ class Patch
   end
 
   # rename the downloaded file to take compression into account
+  # verify the file if a checksum is given
   def stage!
     return unless external?
+
+    # Verify the download; but if no checksum was given
+    # skip this step, for compatibility
+    type = checksum_type
+    unless type.nil?
+      type = type.to_s.upcase
+      hasher = Digest.const_get(type)
+      hash = Pathname.new(@patch_filename).incremental_hash(hasher)
+      message = <<-EOF
+#{type} mismatch
+Expected: #{@checksum}
+Got: #{hash}
+Patch: #{@url}
+EOF
+      raise message unless @checksum.upcase == hash.upcase
+    end
+
     detect_compression!
+
     case @compression
     when :gzip
       @compressed_filename = @patch_filename + '.gz'
@@ -108,6 +129,18 @@ class Patch
   end
 
 private
+
+  # Detect which type of checksum is being used, or nil.
+  # Use the length of the checksum string to determine the type.
+  def checksum_type
+    return nil if @checksum.nil?
+    case @checksum.size
+    when 32 then :md5
+    when 40 then :sha1
+    when 64 then :sha256
+    else raise "Invalid checksum #{@checksum}"
+    end
+  end
 
   # Detect compression type from the downloaded patch.
   def detect_compression!
