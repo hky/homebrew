@@ -148,12 +148,9 @@ class ExternalPatch < Patch
     type = checksum_type
     unless type.nil?
       result =  Pathname.new(@patch_filename).checksum(type, @checksum)
-      message = <<-EOF
-#{result.type} mismatch
-Expected: #{result.expected}
-Got: #{result.actual}
-Patch: #{@url}
-EOF
+      message = result.error_report + <<-EOS.undent
+        Patch: #{@url}
+      EOS
       raise message unless result.success?
     end
 

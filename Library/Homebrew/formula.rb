@@ -486,13 +486,10 @@ public
 
     result = fn.checksum(type, supplied)
     if supplied and not supplied.empty?
-      message = <<-EOF
-#{result.type} mismatch
-Expected: #{result.expected}
-Got: #{result.actual}
-Archive: #{fn}
-(To retry an incomplete download, remove the file above.)
-EOF
+      message = result.error_report + <<-EOS.undent
+        Archive: #{fn}
+        (To retry an incomplete download, remove the file above.)
+      EOS
       raise message unless result.success?
     else
       opoo "Cannot verify package integrity"
