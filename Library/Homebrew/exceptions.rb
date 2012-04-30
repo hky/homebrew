@@ -169,7 +169,7 @@ class ChecksumMismatchError < RuntimeError
       #{@hash_type} mismatch
       Expected: #{@expected}
       Actual: #{@actual}
-      EOS
+    EOS
   end
 
   def to_s
