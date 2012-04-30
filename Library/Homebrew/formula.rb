@@ -1,4 +1,3 @@
-require 'checksums'
 require 'download_strategy'
 require 'dependencies'
 require 'formula_support'
@@ -514,14 +513,8 @@ public
 
     type = @active_spec.checksum_type || :md5
     supplied = @active_spec.send(type)
-    type = type.to_s.upcase
 
-    require 'digest'
-    hasher = Digest.const_get(type)
-    hash = fn.incremental_hash(hasher)
-
-    result = Checksum.new(type).validate(fn, supplied)
-
+    result = fn.checksum(type, supplied)
     if supplied and not supplied.empty?
       message = <<-EOS.undent
         #{result.type} mismatch
@@ -534,7 +527,7 @@ public
     else
       opoo "Cannot verify package integrity"
       puts "The formula did not provide a download checksum"
-      puts "For your reference the #{type} is: #{hash}"
+      puts "For your reference the #{type} is: #{result.actual}"
     end
   end
 

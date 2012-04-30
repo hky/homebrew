@@ -1,6 +1,25 @@
 require 'pathname'
 require 'bottles'
 
+# The result of checksumming a file.
+# Carry this information instead of a boolean so we can
+# generate friendly error messages.
+class ChecksumResult
+  attr_reader :type
+  attr_reader :expected
+  attr_reader :actual
+
+  def initialize type, expected, actual
+    @type = type
+    @expected = expected
+    @actual = actual
+  end
+
+  def success?
+    expected.upcase == actual.upcase
+  end
+end
+
 # we enhance pathname to make our code more readable
 class Pathname
   def install *sources
@@ -266,6 +285,14 @@ class Pathname
       # Assume it is not an archive
       nil
     end
+  end
+
+  def checksum(type, expected)
+    require 'digest'
+    type = type.to_s.upcase
+    hasher = Digest.const_get(type)
+    actual = self.incremental_hash(hasher)
+    return ChecksumResult.new(type, expected, actual)
   end
 
   def incremental_hash(hasher)
