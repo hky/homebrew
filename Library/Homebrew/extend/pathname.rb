@@ -18,6 +18,13 @@ class ChecksumResult
   def success?
     expected.upcase == actual.upcase
   end
+
+  def error_report; <<-EOS.undent
+      #{type} mismatch
+      Expected: #{expected}
+      Got: #{actual}
+    EOS
+  end
 end
 
 # we enhance pathname to make our code more readable
