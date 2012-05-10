@@ -7,9 +7,7 @@ class Libgaiagraphics < Formula
 
   depends_on 'libgeotiff'
   depends_on 'jpeg'
-
-  # Leopard's Cairo is too old.
-  depends_on 'cairo' if MacOS.leopard?
+  depends_on 'cairo'
 
   def install
     system "./configure", "--disable-dependency-tracking",

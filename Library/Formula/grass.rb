@@ -31,8 +31,7 @@ class Grass < Formula
   depends_on "libtiff"
   depends_on "unixodbc"
   depends_on "fftw"
-
-  depends_on "cairo" if MacOS.leopard?
+  depends_on "cairo"
 
   # Patches ensure 32 bit system python is used for wxWidgets and that files
   # are not installed outside of the prefix.
@@ -100,15 +99,10 @@ class Grass < Formula
       args << "--with-macosx-archs=i386"
     end
 
-    # Deal with Cairo support
-    if MacOS.leopard?
-      cairo = Formula.factory('cairo')
-      args << "--with-cairo-includes=#{cairo.include}/cairo"
-      args << "--with-cairo-libs=#{cairo.lib}"
-    else
-      args << "--with-cairo-includes=/usr/X11/include /usr/X11/include/cairo"
-    end
-
+    # Point to Homebrewed Cairo
+    cairo = Formula.factory('cairo')
+    args << "--with-cairo-includes=#{cairo.include}/cairo"
+    args << "--with-cairo-libs=#{cairo.lib}"
     args << "--with-cairo"
 
     # Database support

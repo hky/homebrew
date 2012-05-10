@@ -7,16 +7,14 @@ class Pango < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
+  # The Cairo library shipped with Lion contains a flaw that causes Graphviz
+  # to segfault. See the following ticket for information:
+  #   https://trac.macports.org/ticket/30370
+  # Use Homebrew cairo on aall systems for consistency.
+  depends_on 'cairo'
 
   if MacOS.leopard?
     depends_on 'fontconfig' # Leopard's fontconfig is too old.
-    depends_on 'cairo' # Leopard doesn't come with Cairo.
-  elsif MacOS.lion?
-    # The Cairo library shipped with Lion contains a flaw that causes Graphviz
-    # to segfault. See the following ticket for information:
-    #
-    #   https://trac.macports.org/ticket/30370
-    depends_on 'cairo'
   end
 
   fails_with :llvm do
