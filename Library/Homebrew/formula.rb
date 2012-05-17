@@ -506,6 +506,7 @@ public
   end
 
   # For FormulaInstaller.
+  # `fn` is a Pathname
   def verify_download_integrity fn
     # Checksums don't apply to HEAD
     return if @active_spec == @head
