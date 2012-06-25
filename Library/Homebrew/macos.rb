@@ -236,7 +236,6 @@ module MacOS extend self
     end
   end
 
-
  def xcode_version
     # may return a version string
     # that is guessed based on the compiler, so do not
