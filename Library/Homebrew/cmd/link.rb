@@ -20,6 +20,13 @@ module Homebrew extend self
         next
       end
 
+      f = Formula.factory keg
+      if f.keg_only? and not ARGV.force?
+        opoo "Refusing to link keg-only #{f.name}"
+        puts "Use `brew link --force #{f.name}` if you must link this."
+        next
+      end
+
       if mode == :dryrun
         print "Would remove:\n" do
           keg.link(mode)

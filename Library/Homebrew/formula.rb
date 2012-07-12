@@ -355,6 +355,10 @@ class Formula
     # If an instance of Formula is passed, just return it
     return name if name.kind_of? Formula
 
+    if name.kind_of? Keg
+      name = name.parent.basename
+    end
+
     # Otherwise, convert to String in case a Pathname comes in
     name = name.to_s
 
