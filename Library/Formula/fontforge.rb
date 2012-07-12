@@ -3,7 +3,7 @@ require 'formula'
 class Fontforge < Formula
   homepage 'http://fontforge.sourceforge.net'
   url 'http://downloads.sourceforge.net/project/fontforge/fontforge-source/fontforge_full-20110222.tar.bz2'
-  md5 '5be4dda345b5d73a27cc399df96e463a'
+  sha1 '8fada07647f102351bb1d7d1c4da487356e7142f'
 
   head 'git://fontforge.git.sourceforge.net/gitroot/fontforge/fontforge'
 
@@ -12,6 +12,7 @@ class Fontforge < Formula
   depends_on 'pango'
   depends_on 'potrace'
   depends_on :x11
+  depends_on :xcode
 
   def options
     [['--without-python', 'Build without Python.']]
@@ -55,9 +56,9 @@ class Fontforge < Formula
     fontforge is an X11 application.
 
     To install the Mac OS X wrapper application run:
-        brew linkapps
+      brew linkapps
     or:
-        ln -s #{prefix}/FontForge.app /Applications
+      ln -s #{prefix}/FontForge.app /Applications
     EOS
   end
 end
