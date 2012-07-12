@@ -1,16 +1,42 @@
 require 'formula'
 
+class MySqlConflict < Requirement
+
+  def message
+    if ARGV.force?
+    <<-EOS.undent
+      This formula conflicts with MySQL.
+      Use `brew install --force mariadb` to force side-by-side installation,
+      but Homebrew cannot provide any support for this setup.
+    EOS
+    else
+      <<-EOS.undent
+      Forcing a side-by-side installation of MariaDB and MySQL.
+      Homebrew cannot provide support for this configuration!
+      EOS
+    end
+  end
+
+  def satisified?
+    not Formula.factory("mysql").installed?
+  end
+
+  def fatal?
+    not ARGV.force?
+  end
+end
+
 class Mariadb < Formula
-  # You probably don't want to have this and MySQL's formula linked at the same time
-  # Just saying.
-  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.3.5-ga/kvm-tarbake-jaunty-x86/mariadb-5.3.5-ga.tar.gz'
   homepage 'http://mariadb.org/'
-  md5 '98ce0441b37c8d681855150495fdc03b'
+  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.3.7/kvm-tarbake-jaunty-x86/mariadb-5.3.7.tar.gz'
+  sha1 '1ee2ef4895aefabd66b4884c382ba2cd1f7bbe2d'
 
   depends_on 'readline'
+  depends_on MySqlConflict.new
 
   fails_with :clang do
     build 318
+    cause 'abi_check failure'
   end
 
   def options
@@ -25,10 +51,9 @@ class Mariadb < Formula
   def install
     ENV.append 'CXXFLAGS', '-fno-omit-frame-pointer -felide-constructors'
 
-    # Make universal for bindings to universal applications
     ENV.universal_binary if ARGV.build_universal?
 
-    configure_args = [
+    args = [
       "--without-docs",
       "--without-debug",
       "--disable-dependency-tracking",
@@ -49,9 +74,9 @@ class Mariadb < Formula
       "--with-libevent",
     ]
 
-    configure_args << "--without-server" if ARGV.include? '--client-only'
+    args << "--without-server" if ARGV.include? '--client-only'
 
-    system "./configure", *configure_args
+    system "./configure", *args
     system "make install"
 
     bin.install_symlink "#{libexec}/mysqld"
