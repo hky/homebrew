@@ -64,6 +64,8 @@ private
       MacOS.xcode_version >= "4.3" ? Dependency.new(spec.to_s) : nil
     when :x11, :libpng
       X11Dependency.new(tag)
+    when :xcode
+      XCodeDependency.new
     else
       raise "Unsupported special dependency #{spec}"
     end
@@ -185,6 +187,22 @@ class X11Dependency < Requirement
     Unsatisfied dependency: XQuartz #{@min_version}
     Please install the latest version of XQuartz:
       https://xquartz.macosforge.org
+    EOS
+  end
+
+end
+
+class XCodeDependency < Requirement
+
+  # TODO - should this be "unless --force?"
+  def fatal?; false; end
+
+  def satisfied?
+    MacOS.x11_installed?
+  end
+
+  def message; <<-EOS.undent
+    XCode is required to compile this software.
     EOS
   end
 
