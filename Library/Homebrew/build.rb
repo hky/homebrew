@@ -55,6 +55,18 @@ at_exit do
   end
 end
 
+def link_meta_files f
+  FORMULA_META_FILES.each do |filename|
+    next if File.directory? filename
+    target_file = filename
+    target_file = "#{filename}.txt" if File.exists? "#{filename}.txt"
+    # Some software symlinks these files (see help2man.rb)
+    target_file = Pathname.new(target_file).resolved_path
+    f.prefix.install target_file => filename rescue nil
+    (f.prefix+file).chmod 0644 rescue nil
+  end
+end
+
 def install f
   ENV.x11 if f.external_deps.any? { |dep| dep.is_a? X11Dependency }
 
@@ -100,15 +112,7 @@ def install f
     else
       f.prefix.mkpath
       f.install
-      FORMULA_META_FILES.each do |filename|
-        next if File.directory? filename
-        target_file = filename
-        target_file = "#{filename}.txt" if File.exists? "#{filename}.txt"
-        # Some software symlinks these files (see help2man.rb)
-        target_file = Pathname.new(target_file).resolved_path
-        f.prefix.install target_file => filename rescue nil
-        (f.prefix+file).chmod 0644 rescue nil
-      end
+      link_meta_files f
     end
   end
 rescue Exception
