@@ -238,3 +238,29 @@ def nostdout
     end
   end
 end
+
+class MetaFiles
+  def initialize
+    @documentation_files = %w[
+      AUTHORS ChangeLog CHANGES COPYING COPYRIGHT LICENSE LICENCE
+      README README.md
+    ]
+    @metafiles = %w[ INSTALL_RECEIPT.json ]
+    @ignored_files = %w[ .DS_Store ]
+  end
+
+  # Iterates the list of documentation files.
+  # TODO - make this smarter about file extensions
+  def each &blk
+    @documentation_files.each &blk
+  end
+
+  # true if the given pathname should show in `brew list`
+  def should_list_file? pn
+    # Basename, without a .txt extension, if present
+    basename = pn.basename('.txt').to_s
+    not @documentation_files.include? basename and
+    not @metafiles.include? basename and
+    not @ignored_files.include? basename
+  end
+end

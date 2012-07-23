@@ -55,15 +55,17 @@ at_exit do
   end
 end
 
-def link_meta_files f
+def link_meta_files target_path
   FORMULA_META_FILES.each do |filename|
     next if File.directory? filename
     target_file = filename
     target_file = "#{filename}.txt" if File.exists? "#{filename}.txt"
     # Some software symlinks these files (see help2man.rb)
     target_file = Pathname.new(target_file).resolved_path
-    f.prefix.install target_file => filename rescue nil
-    (f.prefix+file).chmod 0644 rescue nil
+    # Install the metafile, without the .txt extension if any
+    target_path.install target_file => filename rescue nil
+    # Documentation should not be executable
+    (target_path+file).chmod 0644 rescue nil
   end
 end
 
@@ -112,7 +114,7 @@ def install f
     else
       f.prefix.mkpath
       f.install
-      link_meta_files f
+      link_meta_files f.prefix
     end
   end
 rescue Exception

@@ -84,7 +84,7 @@ module Homebrew extend self
   alias_method :failed?, :failed
 end
 
-FORMULA_META_FILES = %w[README README.md ChangeLog CHANGES COPYING LICENSE LICENCE COPYRIGHT AUTHORS]
+FORMULA_META_FILES = MetaFiles.new
 ISSUES_URL = "https://github.com/mxcl/homebrew/wiki/bug-fixing-checklist"
 
 unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
