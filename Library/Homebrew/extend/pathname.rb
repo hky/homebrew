@@ -427,6 +427,15 @@ class Pathname
       end
     end
   end
+
+  # Writes an exec script in this folder to the target pathname
+  def write_exec_script target
+    (self+target.basename()).write <<-EOS.undent
+    #!/bin/bash
+    exec "#{target}" "$@"
+    EOS
+  end
+
 end
 
 # sets $n and $d so you can observe creation of stuff
