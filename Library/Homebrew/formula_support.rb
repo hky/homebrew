@@ -200,12 +200,14 @@ class BuildOptions
     @args.include? '--' + name
   end
 
+  # True if we should build with a given optional or recommended dep
   def with? dep_name
-    include? "with-" + dep_name
+    include? "with-#{dep_name}" and not include? "without-#{dep_name}"
   end
 
+  # True if we should build without a given optional or recommended dep
   def without? dep_name
-    include? "without-" + dep_name
+    not with? dep_name
   end
 
   def head?
