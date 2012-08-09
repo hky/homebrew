@@ -5,6 +5,9 @@ class Tig < Formula
   url 'http://jonas.nitro.dk/tig/releases/tig-1.0.tar.gz'
   md5 'a2d414d1cebbc9cd4f3d545bc6f225c6'
 
+  depends_on 'wget' => :optional
+  depends_on 's-lang' => :recommended
+
   def install
     system "./configure", "--prefix=#{prefix}", "--sysconfdir=#{etc}"
     system "make install"
