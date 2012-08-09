@@ -7,11 +7,7 @@ class Lighttpd < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'pcre'
-  depends_on 'lua' if ARGV.include? '--with-lua'
-
-  def options
-    [['--with-lua', 'Include Lua scripting support for mod_magnet']]
-  end
+  depends_on 'lua' => :optional
 
   def install
     args = %W[
@@ -20,7 +16,7 @@ class Lighttpd < Formula
       --with-openssl
       --with-ldap
     ]
-    args << "--with-lua" if ARGV.include? '--with-lua'
+    args << "--with-lua" if build.with? 'lua'
     system "./configure", *args
     system "make install"
   end
