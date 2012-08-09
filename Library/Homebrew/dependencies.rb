@@ -26,6 +26,7 @@ class DependencyCollector
     @requirements = Set.new
   end
 
+  # Adds the specified dependency to the collector.
   def add spec
     tag = nil
     spec, tag = spec.shift if spec.is_a? Hash
@@ -115,6 +116,14 @@ class Dependency
 
   def options
     @tags.select{|p|p.start_with? '--'}
+  end
+
+  def optional?
+    @tags.include? "optional"
+  end
+
+  def recommended?
+    @tags.include? "recommended"
   end
 end
 

@@ -67,6 +67,26 @@ class FormulaInstaller
       EOS
     end
 
+    check_requirements
+    install_dependencies unless ignore_deps
+
+    oh1 "Installing #{f}" if show_header
+
+    @@attempted ||= Set.new
+    raise FormulaInstallationAlreadyAttemptedError, f if @@attempted.include? f
+    @@attempted << f
+
+    if install_bottle
+      pour
+    else
+      build
+      clean
+    end
+
+    raise "Nothing was installed to #{f.prefix}" unless f.installed?
+  end
+
+  def check_requirements
     # Build up a list of unsatisifed fatal requirements
     first_message = true
     unsatisfied_fatals = []
@@ -85,42 +105,50 @@ class FormulaInstaller
     unless unsatisfied_fatals.empty?
       raise UnsatisfiedRequirements.new(f, unsatisfied_fatals)
     end
+  end
 
-    unless ignore_deps
-      needed_deps = f.recursive_deps.reject{ |d| d.installed? }
-      unless needed_deps.empty?
-        needed_deps.each do |dep|
-          if dep.explicitly_requested?
-            install_dependency dep
-          else
-            ARGV.filter_for_dependencies do
-              # Re-create the formula object so that args like `--HEAD` won't
-              # affect properties like the installation prefix. Also need to
-              # re-check installed status as the Formula may have changed.
-              dep = Formula.factory dep.path
-              install_dependency dep unless dep.installed?
-            end
-          end
+  def install_dependencies
+    needed_deps = f.recursive_dependencies.select { |d| dep_is_needed? d }
+    return if needed_deps.empty?
+
+    # Convert Dependencies to Formulae
+    needed_deps = needed_deps.map{|d| Formula.factory(d.name)}
+
+    needed_deps.each do |dep|
+      if dep.explicitly_requested?
+        install_dependency dep
+      else
+        ARGV.filter_for_dependencies do
+          # Re-create the formula object so that args like `--HEAD` won't
+          # affect properties like the installation prefix. Also need to
+          # re-check installed status as the Formula may have changed.
+          dep = Formula.factory dep.path
+          install_dependency dep unless dep.installed?
         end
-        # now show header as all the deps stuff has clouded the original issue
-        show_header = true
       end
     end
+    # now show header as all the deps stuff has clouded the original issue
+    show_header = true
+  end
 
-    oh1 "Installing #{f}" if show_header
+  def dep_is_needed? dep
+    f_dep = Formula.factory(dep.name)
 
-    @@attempted ||= Set.new
-    raise FormulaInstallationAlreadyAttemptedError, f if @@attempted.include? f
-    @@attempted << f
+    # Don't need to install if already present
+    return false if f_dep.installed?
 
-    if install_bottle
-      pour
-    else
-      build
-      clean
+    # Optional deps are only needed if the correspding option is present
+    return f.build.with? dep.name if dep.optional?
+
+    # Recommended deps can be turned off
+    if dep.recommended?
+      wanted = !f.build.without?(dep.name)
+      ohai "Buildling without #{dep.name}" if not wanted and ARGV.verbose?
+      return wanted
     end
 
-    raise "Nothing was installed to #{f.prefix}" unless f.installed?
+    # Otherwise, we need it
+    return true
   end
 
   def install_dependency dep

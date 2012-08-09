@@ -200,6 +200,14 @@ class BuildOptions
     @args.include? '--' + name
   end
 
+  def with? dep_name
+    include? "with-" + dep_name
+  end
+
+  def without? dep_name
+    include? "without-" + dep_name
+  end
+
   def head?
     @args.flag? '--HEAD'
   end

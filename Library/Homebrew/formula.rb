@@ -410,6 +410,8 @@ class Formula
       raise LoadError
     end
 
+    klass.finalize_dsl
+
     return klass.new(name) if install_type == :from_name
     return klass.new(name, target_file)
   rescue LoadError
@@ -446,6 +448,18 @@ class Formula
     f.deps.map do |dep|
       f_dep = Formula.factory dep.to_s
       expand_deps(f_dep) << f_dep
+    end
+  end
+
+  # This is confusing, but the above two functions already took the good names
+  def recursive_dependencies
+    Formula.find_dependencies(self).flatten.uniq
+  end
+
+  def self.find_dependencies f
+    f.deps.map do |dep|
+      f_dep = Formula.factory dep.to_s
+      find_dependencies(f_dep) << dep
     end
   end
 
@@ -693,6 +707,19 @@ private
         CompilerFailure.new(compiler, &block)
       else
         CompilerFailure.new(compiler)
+      end
+    end
+
+    # Perform any post-require, pre-new actions
+    def finalize_dsl
+      # Synthesize options for optional dependencies
+      dependencies.deps.select {|d| d.optional?}.each do |dep|
+        option "with-#{dep.name}", "Compile with #{dep.name} support"
+      end
+
+      # Synthesize options for recommended dependencies
+      dependencies.deps.select {|d| d.recommended?}.each do |dep|
+        option "without-#{dep.name}", "Compile without #{dep.name} support"
       end
     end
   end
