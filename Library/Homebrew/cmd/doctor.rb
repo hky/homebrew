@@ -199,7 +199,7 @@ def check_for_latest_xcode
   if not MacOS::Xcode.installed?
     # no Xcode, now it depends on the OS X version...
     if MacOS.version >= 10.7 then
-      if not MacOS::CLT.installed?
+      unless MacOS::CLT.installed?
         return <<-EOS.undent
           No Xcode version found!
           No compiler found in /usr/bin!
@@ -209,11 +209,6 @@ def check_for_latest_xcode
             Homebrew does not require all of Xcode, you only need the CLI tools package!
             (However, you need a (free) Apple Developer ID.)
           - Install Xcode from the Mac App Store. (Normal Apple ID is sufficient, here)
-        EOS
-      else
-        return <<-EOS.undent
-          Experimental support for using the "Command Line Tools" without Xcode.
-          Some formulae need Xcode to be installed (for the Frameworks not in the CLT.)
         EOS
       end
     else
@@ -237,7 +232,8 @@ def check_for_latest_xcode
     Not sure what version of Xcode is the latest for OS X #{MacOS.version}.
     EOS
   end
-  if MacOS::Xcode.installed? and MacOS::Xcode.version < latest_xcode then <<-EOS.undent
+  if MacOS::Xcode.installed? and MacOS::Xcode.version < latest_xcode
+    return <<-EOS.undent
     You have Xcode-#{MacOS::Xcode.version}, which is outdated.
     Please install Xcode #{latest_xcode}.
     EOS
@@ -245,24 +241,15 @@ def check_for_latest_xcode
 end
 
 def check_cc
-  unless MacOS::CLT.installed?
-    if MacOS::Xcode.version >= "4.3"
-      return <<-EOS.undent
-        Experimental support for using Xcode without the "Command Line Tools".
-        You have only installed Xcode. If stuff is not building, try installing the
-        "Command Line Tools for Xcode" package.
-      EOS
-    else
-      return <<-EOS.undent
-        No compiler found in /usr/bin!
-      EOS
-    end
+  if not MacOS::CLT.installed? and MacOS::Xcode.provides_gcc?
+    return "No compiler found in /usr/bin!"
   end
 end
 
 def check_standard_compilers
   return if check_for_latest_xcode # only check if Xcode is up to date
-  if !MacOS.compilers_standard? then <<-EOS.undent
+  unless MacOS.compilers_standard?
+    return <<-EOS.undent
     Your compilers are different from the standard versions for your Xcode.
     If you have Xcode 4.3 or newer, you should install the Command Line Tools for
     Xcode from within Xcode's Download preferences.
